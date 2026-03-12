@@ -74,7 +74,7 @@
                         <span class="rating-list__text"> ({{ $product->total_review }})</span>
                     </div>
                 @endif
-                <span class="sales d-block d-lg-none">@lang('Sale') {{ @$product->total_sold }}</span>
+                <span class="sales d-block d-lg-none">{{ showDateTime($product->published_at ?? $product->created_at, 'd M Y') }}</span>
             </div>
         @endif
     </div>

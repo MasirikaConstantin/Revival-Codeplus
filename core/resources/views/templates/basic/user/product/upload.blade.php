@@ -3,8 +3,6 @@
 @section('content')
     @php
         $selectedCategory = $categories->firstWhere('id', request()->category);
-        $personalBuyerFee = $selectedCategory ? $selectedCategory->personal_buyer_fee : 0;
-        $commercialBuyerFee = $selectedCategory ? $selectedCategory->commercial_buyer_fee : 0;
     @endphp
     <section class="upload-product pt-60 pb-120">
         <div class="container">
@@ -61,12 +59,6 @@
                                         <b>{{ getFileSize('productPreview') }}</b> @lang('px')</b></span>
                                 @endif
                             </div>
-                            <div class="form-group">
-                                <label for="mainFile" class="form--label">@lang('Main File')</label>
-                                <input type="file" class="form--control form--control--sm" name="main_file"
-                                       accept=".zip" required>
-                                <span class="alert-message fs-14">@lang('ZIP all the files for buyers.')</span>
-                            </div>
                             @if ($selectedCategory->file_type !== 'audio')
                                 <div class="form-group">
                                     <label for="screenshots" class="form--label">
@@ -122,66 +114,6 @@
                                 </select>
                             </div>
                         </div>
-                        @if ($isFree == 0)
-                            <div class="upload-product-item">
-                                <h6 class="upload-product-item__title">@lang('License Price')</h6>
-                                <div class="license-price-content-wrapper">
-                                    <div class="license-price-content priceGroup"
-                                         data-seller_fee="{{ getAmount($personalBuyerFee) }}">
-                                        <span class="license-price-content__type fw-semibold">@lang('Personal License')</span>
-                                        <div class="license-price-content__price">
-                                            <span class="license-price-content__title">@lang('Price')</span>
-                                            <div class="input-group w-100 flex-nowrap">
-                                                <span class="input-group-text">{{ gs('cur_sym') }}</span>
-                                                <input type="number" step="any" name="price"
-                                                       value="{{ old('price') }}"
-                                                       class="form--control form--contr
-                                            ol--sm">
-                                            </div>
-                                        </div>
-                                        <span class="license-price-content__operator">+</span>
-                                        <div class="license-price-content__price">
-                                            <span class="license-price-content__title">@lang('Buyer Fee')</span>
-                                            <span
-                                                  class="license-price-content__text">{{ showAmount($personalBuyerFee) }}</span>
-                                        </div>
-                                        <span class="license-price-content__operator">=</span>
-                                        <div class="license-price-content__price">
-                                            <span class="license-price-content__title">@lang('Total Price')</span>
-                                            <span
-                                                  class="license-price-content__text text--base fw-semibold totalPrice">{{ showAmount($personalBuyerFee) }}</span>
-                                        </div>
-                                    </div>
-                                    <div class="license-price-content priceGroup"
-                                         data-seller_fee="{{ getAmount($commercialBuyerFee) }}">
-                                        <span class="license-price-content__type fw-semibold">@lang('Commercial License')</span>
-                                        <div class="license-price-content__price">
-                                            <span class="license-price-content__title">@lang('Price')</span>
-                                            <div class="input-group">
-                                                <span class="input-group-text">{{ gs('cur_sym') }}</span>
-                                                <input type="number" step="any" name="price_cl"
-                                                       value="{{ old('price_cl') }}"
-                                                       class="form-control form--control form--control--sm">
-                                            </div>
-                                        </div>
-                                        <span class="license-price-content__operator">+</span>
-                                        <div class="license-price-content__price">
-                                            <span class="license-price-content__title">@lang('Buyer Fee')</span>
-                                            <span
-                                                  class="license-price-content__text">{{ showAmount($commercialBuyerFee) }}</span>
-                                        </div>
-                                        <span class="license-price-content__operator">=</span>
-                                        <div class="license-price-content__price">
-                                            <span class="license-price-content__title">@lang('Total Price')</span>
-                                            <span
-                                                  class="license-price-content__text text--base fw-semibold totalPrice">{{ showAmount($commercialBuyerFee) }}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        @else
-                            <input type="hidden" name="is_free" value="1">
-                        @endif
                         <div class="upload-product-item">
                             <h6 class="upload-product-item__title">@lang('Message to the Reviewer')</h6>
                             <div class="form-group">
@@ -278,20 +210,8 @@
                     html += `<option value="${subcategory.id}">${subcategory.name}</option>`;
                 });
 
-                $('[name=subcategory]').html(html);
+                $('[name=sub_category]').html(html);
             });
-
-            let curSym = `{{ gs('cur_sym') }}`;
-
-            $('[name=price], [name=price_cl]')
-                .on('input', function() {
-                    let price = $(this).val() * 1;
-                    let sellerFee = $(this).closest('.priceGroup').data('seller_fee') * 1;
-                    let totalPrice = price + sellerFee;
-                    $(this).closest('.priceGroup').find('.totalPrice').text(curSym + totalPrice.toFixed(2));
-                }).trigger('input');
-
-
             $(document).on('mouseover ', '.nicEdit-main,.nicEdit-panelContain', function() {
                 $('.nicEdit-main').focus();
             });

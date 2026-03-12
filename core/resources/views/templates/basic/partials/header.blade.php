@@ -4,7 +4,6 @@
             $query->active();
         }])
         ->get();
-    $cartLength = cartCount();
 @endphp
 @include($activeTemplate . 'partials.header_top')
 
@@ -45,11 +44,6 @@
                         </li>
                     @endforeach
                 </ul>
-
-                <a href="{{ route('cart.index') }}" class="cart-button ms-0 d-none d-lg-block">
-                        <span class="cart-button__icon "><i class="icon-Add-to-Cart-Button"></i></span>
-                        <span class="cart-button__qty flex-center">{{ $cartLength }}</span>
-                </a>
             </div>
         </nav>
     </div>

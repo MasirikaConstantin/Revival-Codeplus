@@ -13,10 +13,10 @@
                             </div>
                         </ul>
                     </div>
-                    <a href="{{ route('collections.cart', $collection->id) }}" class="btn btn--success btn--sm">
-                        <i class="la la-shopping-cart"></i>
-                        @lang('Add All Items to Cart')
-                    </a>
+                    <span class="btn btn-outline--base btn--sm disabled">
+                        <i class="las la-box"></i>
+                        @lang('Catalogue Collection')
+                    </span>
                 </div>
             @endif
             <div class="product__inner">

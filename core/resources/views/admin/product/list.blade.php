@@ -11,14 +11,6 @@
                                 <input type="search" name="search" value="{{ request()->search }}" class="form-control">
                             </div>
                             <div class="flex-grow-1">
-                                <label>@lang('Type')</label>
-                                <select name="is_free" class="form-control select2" data-minimum-results-for-search="-1">
-                                    <option value="">@lang('All')</option>
-                                    <option value="1" @selected(request()->is_free == '1')>@lang('Free')</option>
-                                    <option value="0" @selected(request()->is_free == '0')>@lang('Paid')</option>
-                                </select>
-                            </div>
-                            <div class="flex-grow-1">
                                 <label>@lang('Upload Date')</label>
                                 <input name="date" type="search"
                                     class="datepicker-here form-control bg--white pe-2 date-range"
@@ -42,7 +34,6 @@
                                     <th>@lang('Product | Upload Date')</th>
                                     <th>@lang('Author')</th>
                                     <th>@lang('Category')</th>
-                                    <th>@lang('Price/Commercial Price')</th>
                                     <th>@lang('Status')</th>
                                     <th>@lang('Rating')</th>
                                     <th>@lang('Action')</th>
@@ -79,14 +70,6 @@
                                                 {{ __(@$product->subCategory->name) }} <br>
                                                 <span>{{ __(@$product->category->name) }}</span>
                                             </div>
-                                        </td>
-                                        <td>
-                                            @if (!$product->is_free)
-                                                {{ showAmount($product->price) }} /
-                                                {{ showAmount($product->price_cl) }}
-                                            @else
-                                                <span class="badge badge--success">@lang('Free')</span>
-                                            @endif
                                         </td>
                                         <td>@php echo $product->statusBadge @endphp</td>
                                         <td>

@@ -61,12 +61,6 @@
                                         <b>{{ getFileSize('productPreview') }}</b> @lang('px')</b></span>
                                 @endif
                             </div>
-                            <div class="form-group">
-                                <label for="mainFile" class="form--label">@lang('Main File')</label>
-                                <input type="file" class="form--control form--control--sm" name="main_file"
-                                       accept=".zip">
-                                <span class="alert-message fs-14">@lang('ZIP all the files for buyers')</span>
-                            </div>
                             @if (@$product->category->file_type !== 'audio')
                                 <div class="form-group">
                                     <label for="screenshots" class="form--label">@lang('Screenshots')</label>
@@ -109,70 +103,6 @@
                                         <option value="{{ $tag }}" selected>{{ $tag }}</option>
                                     @endforeach
                                 </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="itemSupport" class="form--label">@lang('Item Will be Support?')</label>
-                                <select id="itemSupport" class="select form--control form--control--sm select2"
-                                        data-minimum-results-for-search="-1">
-                                    <option value="yes">@lang('Yes')</option>
-                                    <option value="no">@lang('No')</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="upload-product-item">
-                            <h6 class="upload-product-item__title">@lang('License Prices')</h6>
-                            <div class="license-price-content-wrapper">
-                                <div class="license-price-content priceGroup"
-                                     data-seller_fee="{{ getAmount($product->personalBuyerFee()) }}">
-                                    <span class="license-price-content__type fw-semibold">@lang('Personal License')</span>
-                                    <div class="license-price-content__price">
-                                        <span class="license-price-content__title">@lang('Price')</span>
-                                        <div class="input-group">
-                                            <span class="input-group-text">{{ gs('cur_sym') }}</span>
-                                            <input type="number" step="any" name="price"
-                                                   value="{{ getAmount($product->price) }}"
-                                                   class="form-control form--control form--control--sm">
-                                        </div>
-                                    </div>
-                                    <span class="license-price-content__operator">+</span>
-                                    <div class="license-price-content__price">
-                                        <span class="license-price-content__title">@lang('Buyer Fee')</span>
-                                        <span
-                                              class="license-price-content__text">{{ showAmount($product->personalBuyerFee()) }}</span>
-                                    </div>
-                                    <span class="license-price-content__operator">=</span>
-                                    <div class="license-price-content__price">
-                                        <span class="license-price-content__title">@lang('Total Price')</span>
-                                        <span
-                                              class="license-price-content__text text--base fw-semibold totalPrice">{{ showAmount($product->personalBuyerFee()) }}</span>
-                                    </div>
-                                </div>
-                                <div class="license-price-content priceGroup"
-                                     data-seller_fee="{{ getAmount($product->commercialBuyerFee()) }}">
-                                    <span class="license-price-content__type fw-semibold">@lang('Commercial License')</span>
-                                    <div class="license-price-content__price">
-                                        <span class="license-price-content__title">@lang('Price')</span>
-                                        <div class="input-group">
-                                            <span class="input-group-text">{{ gs('cur_sym') }}</span>
-                                            <input type="number" step="any" name="price_cl"
-                                                   value="{{ getAmount($product->price_cl) }}"
-                                                   class="form-control form--control form--control--sm">
-                                        </div>
-                                    </div>
-                                    <span class="license-price-content__operator">+</span>
-                                    <div class="license-price-content__price">
-                                        <span class="license-price-content__title">@lang('Buyer Fee')</span>
-                                        <span
-                                              class="license-price-content__text">{{ showAmount($product->commercialBuyerFee()) }}</span>
-                                    </div>
-                                    <span class="license-price-content__operator">=</span>
-                                    <div class="license-price-content__price">
-                                        <span class="license-price-content__title">@lang('Total Price')</span>
-                                        <span
-                                              class="license-price-content__text text--base fw-semibold totalPrice">{{ showAmount($product->commercialBuyerFee()) }}</span>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                         @if (gs('changelog'))
@@ -323,18 +253,8 @@
                     html += `<option value="${subcategory.id}">${subcategory.name}</option>`;
                 });
 
-                $('[name=subcategory]').html(html);
+                $('[name=sub_category]').html(html);
             });
-
-            let curSym = `{{ gs('cur_sym') }}`;
-
-            $('[name=price], [name=price_cl]')
-                .on('input', function() {
-                    let price = $(this).val() * 1;
-                    let sellerFee = $(this).closest('.priceGroup').data('seller_fee') * 1;
-                    let totalPrice = price + sellerFee;
-                    $(this).closest('.priceGroup').find('.totalPrice').text(curSym + totalPrice.toFixed(2));
-                }).trigger('input');
 
             function initializeNicEditors() {
                 $(".nicEdit").each(function(index) {

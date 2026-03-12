@@ -4,7 +4,7 @@
         <div class="col-12">
             <div class="d-flex align-items-center justify-content-between flex-wrap">
                 <h6 class="mb-0">{{ __($pageTitle) }}</h6>
-                <a href="{{ route('user.author.download') }}"
+                <a href="{{ route('user.home') }}"
                     class="btn btn-outline--base btn--sm">
                     <i class="la la-rotate-left"></i> @lang('Back')
                 </a>

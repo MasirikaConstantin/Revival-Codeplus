@@ -116,10 +116,6 @@ class ProductController extends Controller
 
         $product->approved_by  = auth('reviewer')->id();
         $product->published_at = now();
-
-        $newFile            = $product->temp_file;
-        $product->temp_file = null;
-        $product->file      = $newFile;
         $product->status    = Status::PRODUCT_APPROVED;
         $product->save();
 
@@ -327,7 +323,7 @@ class ProductController extends Controller
     private function productData($scope = null, $withoutPagination = null, $own = null)
     {
         $reviewer = auth('reviewer')->user();
-        $products = Product::whereIn('sub_category_id', $reviewer->subcategories ?? [])->with(['category', 'subCategory'])->searchable(['title'])->filter(['is_free'])->dateFilter();
+        $products = Product::whereIn('sub_category_id', $reviewer->subcategories ?? [])->with(['category', 'subCategory'])->searchable(['title'])->dateFilter();
 
         if ($scope) $products->$scope();
         if ($own) $products->where('assigned_to', auth('reviewer')->id());

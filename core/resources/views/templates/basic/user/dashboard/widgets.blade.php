@@ -1,11 +1,13 @@
 @php
     $user             = $author;
-    $totalWithdrawals = $user->withdrawals()->success()->sum('amount');
-    $bsColClass       = $user->is_author ? 'col-lg-3' : 'col-lg-4';
+    $publishedProducts = $user->products()->approved()->count();
+    $pendingProducts   = $user->products()->pending()->count();
+    $favoriteCount     = $user->favoriteProducts()->count();
+    $collectionCount   = $user->collections()->count();
+    $bsColClass        = 'col-lg-3';
 @endphp
 
 <div class="row gy-3">
-    @if (auth()->user()->is_author)
     @php
         $currentLevel = $user->currentAuthorLevel->first();
     @endphp
@@ -21,58 +23,50 @@
             </div>
         </div>
     </div>
-    @else
-
     <div class="{{ $bsColClass }} col-sm-6">
         <div class="dashboard-widget">
-            <span class="dashboard-widget__icon--big"><i class="icon-money-bag-Icon"></i></span>
-            <h6 class="dashboard-widget__title">@lang('Balance')</h6>
+            <span class="dashboard-widget__icon--big"><i class="las la-box-open"></i></span>
+            <h6 class="dashboard-widget__title">@lang('Published Products')</h6>
             <div class="dashboard-widget__content">
-                <span class="dashboard-widget__icon"><i class="icon-money-bag-Icon"></i></span>
+                <span class="dashboard-widget__icon"><i class="las la-box-open"></i></span>
                 <div class="dashboard-widget__info">
-                    <h5 class="dashboard-widget__amount">{{ showAmount($user->balance) }}</h5>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    @endif
-
-    @if (auth()->user()->is_author)
-        <div class="{{ $bsColClass }} col-sm-6">
-            <div class="dashboard-widget">
-                <span class="dashboard-widget__icon--big"><i class="la la-coins"></i></span>
-                <h6 class="dashboard-widget__title">@lang('Sale Amount')</h6>
-                <div class="dashboard-widget__content">
-                    <span class="dashboard-widget__icon"><i class="la la-coins"></i></span>
-                    <div class="dashboard-widget__info">
-                        <h5 class="dashboard-widget__amount">{{ showAmount($saleAmount) }}</h5>
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endif
-    <div class="{{ $bsColClass }} col-sm-6">
-        <div class="dashboard-widget">
-            <span class="dashboard-widget__icon--big"><i class="la la-money-bill-wave"></i></span>
-            <h6 class="dashboard-widget__title">@lang('Purchase Amount')</h6>
-            <div class="dashboard-widget__content">
-                <span class="dashboard-widget__icon"><i class="la la-money-bill-wave"></i></span>
-                <div class="dashboard-widget__info">
-                    <h5 class="dashboard-widget__amount">{{ showAmount($totalPurchaseAmount) }}</h5>
+                    <h5 class="dashboard-widget__amount">{{ $publishedProducts }}</h5>
                 </div>
             </div>
         </div>
     </div>
     <div class="{{ $bsColClass }} col-sm-6">
         <div class="dashboard-widget">
-            <span class="dashboard-widget__icon--big"><i class="la la-bank"></i></span>
-            <h6 class="dashboard-widget__title">@lang('Withdrawals')</h6>
+            <span class="dashboard-widget__icon--big"><i class="las la-hourglass-half"></i></span>
+            <h6 class="dashboard-widget__title">@lang('Pending Review')</h6>
             <div class="dashboard-widget__content">
-                <span class="dashboard-widget__icon"><i class="la la-bank"></i></span>
+                <span class="dashboard-widget__icon"><i class="las la-hourglass-half"></i></span>
                 <div class="dashboard-widget__info">
-                    <h5 class="dashboard-widget__amount">{{ showAmount($totalWithdrawals) }}
-                    </h5>
+                    <h5 class="dashboard-widget__amount">{{ $pendingProducts }}</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="{{ $bsColClass }} col-sm-6">
+        <div class="dashboard-widget">
+            <span class="dashboard-widget__icon--big"><i class="la la-heart-o"></i></span>
+            <h6 class="dashboard-widget__title">@lang('Favorites')</h6>
+            <div class="dashboard-widget__content">
+                <span class="dashboard-widget__icon"><i class="la la-heart-o"></i></span>
+                <div class="dashboard-widget__info">
+                    <h5 class="dashboard-widget__amount">{{ $favoriteCount }}</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="{{ $bsColClass }} col-sm-6">
+        <div class="dashboard-widget">
+            <span class="dashboard-widget__icon--big"><i class="la la-copy"></i></span>
+            <h6 class="dashboard-widget__title">@lang('Collections')</h6>
+            <div class="dashboard-widget__content">
+                <span class="dashboard-widget__icon"><i class="la la-copy"></i></span>
+                <div class="dashboard-widget__info">
+                    <h5 class="dashboard-widget__amount">{{ $collectionCount }}</h5>
                 </div>
             </div>
         </div>

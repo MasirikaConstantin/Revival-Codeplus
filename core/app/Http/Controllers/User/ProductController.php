@@ -80,25 +80,17 @@ class ProductController extends Controller {
         $formattedFileTypes = array_map(fn($type) => $type, $previewFileTypes); // No need to quote the file types
         $maxSizeMB          = $category->file_size ?? 5;
 
-        $optional        = $id ? 'nullable' : 'required';
-        $priceValidation = $isFree ? 'nullable' : 'required|numeric|gt:0';
-
         $maxPreviewVideoSize = gs('preview_video_size') * 1024;
 
         $validationRule = [
             'title'         => 'required',
             'description'   => 'required',
             'category'      => 'required',
-            'price'         => $priceValidation,
-            'price_cl'      => $priceValidation,
-
             'preview_file'  => [
                 ($category->file_type === 'audio' && !$id) ? 'required' : 'nullable',
                 new FileTypeValidate($formattedFileTypes),
                 "max:" . ($maxSizeMB * 1024),
             ],
-
-            'main_file'     => [$optional, new FileTypeValidate(['zip'])],
             'demo_url'      => [
                 $category->file_type === 'audio' ? 'nullable' : 'required',
                 'url',
@@ -112,11 +104,6 @@ class ProductController extends Controller {
             'is_free'       => 'nullable|in:0,1',
         ];
 
-        if ($request->is_free == Status::YES && !gs('free_item')) {
-            $notify[] = ['error', 'Free item upload is currently disabled'];
-            return back()->withNotify($notify);
-        }
-
         $form = Form::where('id', $subcategory->form_id)->where('act', 'subcategory_attributes')->first();
 
         $allValidationRule = $validationRule;
@@ -129,14 +116,7 @@ class ProductController extends Controller {
 
         $request->validate($allValidationRule);
 
-        if ($id && $request->hasFile('main_file') && $product->product_updated == Status::PRODUCT_UPDATE_PENDING) {
-            $notify[] = ['error', 'You have a pending submission'];
-            return back()->withNotify($notify);
-        }
-
-        if (gs('free_item')) {
-            $product->is_free = $isFree ? Status::ENABLE : Status::DISABLE;
-        }
+        $product->is_free = Status::DISABLE;
 
         $product->title = $request->title;
         $purifier       = new \HTMLPurifier();
@@ -163,10 +143,6 @@ class ProductController extends Controller {
                 }
             }
         }
-        if ($request->hasFile('main_file')) {
-            $this->uploadMainFile($request, $product, $id);
-        }
-
         if ($request->hasFile('screenshots')) {
             $this->uploadScreenshot($request, $product, $id);
         }
@@ -207,8 +183,8 @@ class ProductController extends Controller {
         $product->description     = htmlspecialchars_decode($purifier->purify($request->description));
         $product->category_id     = $category->id;
         $product->sub_category_id = $subcategory->id;
-        $product->price           = $request->price ?? 0;
-        $product->price_cl        = $request->price_cl ?? 0;
+        $product->price           = 0;
+        $product->price_cl        = 0;
         $product->demo_url        = $request->demo_url;
         $product->attribute_info  = $attributeInfo;
         $product->save();
@@ -219,10 +195,6 @@ class ProductController extends Controller {
             $activity->message    = $request->message;
             $activity->product_id = $product->id;
             $activity->save();
-        }
-
-        if ($request->hasFile('main_file')) {
-            $notify[] = ['info', 'Your submission is under review'];
         }
 
         $notify[] = ['success', 'Product information saved successfully'];
@@ -358,31 +330,9 @@ class ProductController extends Controller {
             return back()->withInput($request->all())->withNotify($notify);
         }
     }
-    private function uploadMainFile($request, &$product, $id) {
-        try {
-            $slug = $product->slug;
-            if ($id) {
-                $product->product_updated = Status::PRODUCT_UPDATE_PENDING;
-            }
-
-            $fileUploader       = new FileUploader();
-            $fileUploader->path = getFilePath('productFile') . '/' . $slug;
-            $fileUploader->file = $request->main_file;
-            $fileUploader->upload();
-
-            $product->temp_file = $fileUploader->fileName;
-        } catch (\Exception $exp) {
-            $notify[] = ['error', 'Couldn\'t upload your file'];
-            return back()->withInput($request->all())->withNotify($notify);
-        }
-    }
-
     private function uploadPreviewVideo($request, &$product, $id) {
         try {
             $slug = $product->slug;
-            if ($id) {
-                $product->product_updated = Status::PRODUCT_UPDATE_PENDING;
-            }
 
             if ($product->preview_video) {
                 $oldFilePath = getFilePath('previewVideo') . '/' . $slug . '/' . $product->preview_video;

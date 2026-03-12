@@ -18,39 +18,23 @@
                 </div>
 
                 <div class="col-xxl-3 col-sm-6">
-                    <x-widget style="7" link="{{ route('admin.sell.items', $user->id) }}" icon="la la-sellsy" title="Sold Items" value="{{ @$user->sold_items_count }}" bg="12" type="2" />
+                    <x-widget style="7" link="{{ route('admin.users.detail', $user->id) }}" icon="la la-heart-o" title="Favorites" value="{{ $user->favoriteProducts()->count() }}" bg="12" type="2" />
                 </div>
 
                 <div class="col-xxl-3 col-sm-6">
-                    <x-widget style="7" link="{{ route('admin.report.transaction', $user->id) }}" title="Balance" icon="las la-money-bill-wave-alt" value="{{ showAmount($user->balance) }}" bg="indigo" type="2" />
+                    <x-widget style="7" link="{{ route('admin.users.detail', $user->id) }}" title="Collections" icon="las la-copy" value="{{ $user->collections()->count() }}" bg="indigo" type="2" />
                 </div>
 
                 <div class="col-xxl-3 col-sm-6">
-                    <x-widget style="7" link="{{ route('admin.deposit.list', $user->id) }}" title="Payments" icon="las la-wallet" value="{{ showAmount($totalDeposit) }}" bg="8" type="2" />
+                    <x-widget style="7" link="{{ route('admin.users.detail', $user->id) }}" title="Followers" icon="las la-user-friends" value="{{ $user->followers()->count() }}" bg="8" type="2" />
                 </div>
 
                 <div class="col-xxl-3 col-sm-6">
-                    <x-widget style="7" link="{{ route('admin.withdraw.data.all', $user->id) }}" title="Withdrawals" icon="la la-bank" value="{{ showAmount($totalWithdrawals) }}" bg="6" type="2" />
-                </div>
-
-                <div class="col-xxl-3 col-sm-6">
-                    <x-widget style="7" link="{{ route('admin.report.transaction', $user->id) }}" title="Transactions" icon="las la-exchange-alt" value="{{ $totalTransaction }}" bg="17" type="2" />
+                    <x-widget style="7" link="{{ route('admin.users.detail', $user->id) }}" title="Following" icon="las la-user-plus" value="{{ $user->follows()->count() }}" bg="6" type="2" />
                 </div>
             </div>
 
             <div class="d-flex flex-wrap gap-3 mt-4">
-                <div class="flex-fill">
-                    <button data-bs-toggle="modal" data-bs-target="#addSubModal" class="btn btn--success btn--shadow w-100 btn-lg bal-btn" data-act="add">
-                        <i class="las la-plus-circle"></i> @lang('Balance')
-                    </button>
-                </div>
-
-                <div class="flex-fill">
-                    <button data-bs-toggle="modal" data-bs-target="#addSubModal" class="btn btn--danger btn--shadow w-100 btn-lg bal-btn" data-act="sub">
-                        <i class="las la-minus-circle"></i> @lang('Balance')
-                    </button>
-                </div>
-
                 <div class="flex-fill">
                     <a href="{{ route('admin.report.login.history') }}?search={{ $user->username }}" class="btn btn--primary btn--shadow w-100 btn-lg">
                         <i class="las la-list-alt"></i>@lang('Logins')
@@ -201,43 +185,6 @@
         </div>
     </div>
 
-
-
-    {{-- Add Sub Balance MODAL --}}
-    <div id="addSubModal" class="modal fade" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"><span class="type"></span> <span>@lang('Balance')</span></h5>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                        <i class="las la-times"></i>
-                    </button>
-                </div>
-                <form action="{{ route('admin.users.add.sub.balance', $user->id) }}" class="balanceAddSub disableSubmission" method="POST">
-                    @csrf
-                    <input type="hidden" name="act">
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label>@lang('Amount')</label>
-                            <div class="input-group">
-                                <input type="number" step="any" name="amount" class="form-control" placeholder="@lang('Please provide positive amount')" required>
-                                <div class="input-group-text">{{ __(gs('cur_text')) }}</div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>@lang('Remark')</label>
-                            <textarea class="form-control" placeholder="@lang('Remark')" name="remark" rows="4" required></textarea>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn--primary h-45 w-100">@lang('Submit')</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-
     <div id="userStatusModal" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -290,20 +237,6 @@
     <script>
         (function($) {
             "use strict"
-
-
-            $('.bal-btn').on('click', function() {
-
-                $('.balanceAddSub')[0].reset();
-
-                var act = $(this).data('act');
-                $('#addSubModal').find('input[name=act]').val(act);
-                if (act == 'add') {
-                    $('.type').text('Add');
-                } else {
-                    $('.type').text('Subtract');
-                }
-            });
 
             let mobileElement = $('.mobile-code');
             $('select[name=country]').on('change', function() {

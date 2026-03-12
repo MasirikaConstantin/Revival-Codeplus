@@ -1,15 +1,7 @@
 <div class="common-sidebar__item d-none d-lg-block">
-    @if ($product->is_free)
-        <div class="common-sidebar__content text-center">
-            <h5 class="mb-0"><i class="las la-download"></i> {{ @$product->download_count ?: 0 }}
-                {{ str()->plural('Download', @$product->download_count ?: 0) }} </h5>
-        </div>
-    @else
-        <div class="common-sidebar__content text-center">
-            <h5 class="mb-0"><i class="icon-Add-to-Cart-Button"></i> {{ @$product->total_sold }}
-                {{ str()->plural('Sale', @$product->total_sold) }} </h5>
-        </div>
-    @endif
+    <div class="common-sidebar__content text-center">
+        <h5 class="mb-0"><i class="las la-box"></i> @lang('Catalogue Preview')</h5>
+    </div>
 </div>
 
 <div class="common-sidebar__item">

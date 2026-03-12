@@ -14,9 +14,7 @@
                             <thead>
                                 <tr>
                                     <th>@lang('Name')</th>
-                                    <th>@lang('Personal Buyer Fee')</th>
-                                    <th>@lang('Commercial Buyer Fee')</th>
-                                    <th>@lang('Twelve Months Extended Fee')</th>
+                                    <th>@lang('Preview Type')</th>
                                     <th>@lang('Status')</th>
                                     <th>@lang('Featured')</th>
                                     <th>@lang('Action')</th>
@@ -34,9 +32,7 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td>{{ showAmount($category->personal_buyer_fee) }}</td>
-                                        <td>{{ showAmount($category->commercial_buyer_fee) }}</td>
-                                        <td>{{ showAmount($category->twelve_month_extended_fee) }}</td>
+                                        <td>{{ __($category->file_type ?: 'N/A') }}</td>
                                         <td>@php echo $category->statusBadge @endphp</td>
                                         <td>@php echo $category->featuredBadge @endphp</td>
                                         <td>
@@ -53,9 +49,6 @@
                                                     <button class="btn btn-sm btn-outline--primary editButton dropdown-item"
                                                             data-id="{{ $category->id }}" data-name="{{ __($category->name) }}"
                                                             data-status="{{ $category->status }}"
-                                                            data-personal_buyer_fee="{{ getAmount($category->personal_buyer_fee) }}"
-                                                            data-commercial_buyer_fee="{{ getAmount($category->commercial_buyer_fee) }}"
-                                                            data-twelve_month_extended_fee="{{ getAmount($category->twelve_month_extended_fee) }}"
                                                             data-description="{{ $category->description }}"
                                                             data-file_type="{{ $category->file_type }}"
                                                             data-file_size="{{ $category->file_size }}"
@@ -144,33 +137,6 @@
                                     <label>@lang('Name')</label>
                                     <input type="text" class="form-control" name="name" required>
                                 </div>
-                                <div class="form-group">
-                                    <label>@lang('Buyer Fee')(@lang('Personal License'))</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text">{{ gs('cur_sym') }}</span>
-                                        <input class="form-control" type="number" step="any"
-                                               name="personal_buyer_fee" required>
-                                        <span class="input-group-text">{{ gs('cur_text') }}</span>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label>@lang('Buyer Fee')(@lang('Commercial License'))</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text">{{ gs('cur_sym') }}</span>
-                                        <input class="form-control" type="number" step="any"
-                                               name="commercial_buyer_fee" required>
-                                        <span class="input-group-text">{{ gs('cur_text') }}</span>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label>@lang('12 Month Extended Fee')</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text">{{ gs('cur_sym') }}</span>
-                                        <input class="form-control" type="number" step="any"
-                                               name="twelve_month_extended_fee" required>
-                                        <span class="input-group-text">{{ gs('cur_text') }}</span>
-                                    </div>
-                                </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
@@ -249,9 +215,6 @@
                         $('select[name="preview_file_types[]"]').append(optionElement);
                     });
                 }
-                modal.find('[name=personal_buyer_fee]').val(data.personal_buyer_fee);
-                modal.find('[name=commercial_buyer_fee]').val(data.commercial_buyer_fee);
-                modal.find('[name=twelve_month_extended_fee]').val(data.twelve_month_extended_fee);
                 modal.find('.image-upload-preview').css('background-image', `url(${data.image})`);
                 modal.find('[name=description]').html(data.description);
                 modal.find('[name=status]').bootstrapToggle(data.status ? 'on' : 'off');

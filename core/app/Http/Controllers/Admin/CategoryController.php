@@ -21,9 +21,6 @@ class CategoryController extends Controller {
         $request->validate([
             'name'                      => 'required|unique:categories,name',
             'image'                     => ['required', 'image', new FileTypeValidate(['jpg', 'jpeg', 'png'])],
-            'personal_buyer_fee'        => 'required|numeric|gte:0',
-            'commercial_buyer_fee'      => 'required|numeric|gte:0',
-            'twelve_month_extended_fee' => 'required|numeric|min:0',
             'file_type'                 => 'required',
             'file_size'                 => 'nullable|numeric|gt:0|required_if:file_type,audio',
             'preview_file_types'        => 'nullable|array|required_if:file_type,audio',
@@ -34,9 +31,9 @@ class CategoryController extends Controller {
         $category->file_type                 = $request->file_type;
         $category->file_size                 = $request->file_size;
         $category->preview_file_types        = $request->preview_file_types;
-        $category->personal_buyer_fee        = $request->personal_buyer_fee;
-        $category->commercial_buyer_fee      = $request->commercial_buyer_fee;
-        $category->twelve_month_extended_fee = $request->twelve_month_extended_fee;
+        $category->personal_buyer_fee        = 0;
+        $category->commercial_buyer_fee      = 0;
+        $category->twelve_month_extended_fee = 0;
         $category->save();
 
         if ($request->hasFile('image')) {
@@ -56,9 +53,6 @@ class CategoryController extends Controller {
     public function update(Request $request, $id) {
         $request->validate([
             'name'                      => 'required|unique:categories,name,' . $id,
-            'personal_buyer_fee'        => 'required|numeric|gte:0',
-            'commercial_buyer_fee'      => 'required|numeric|gte:0',
-            'twelve_month_extended_fee' => 'required|numeric|min:0',
             'file_type'                 => 'required',
             'file_size'                 => 'nullable|numeric|gt:0|required_if:file_type,audio',
             'preview_file_types'        => 'nullable|array|required_if:file_type,audio',
@@ -69,9 +63,9 @@ class CategoryController extends Controller {
         $category->file_type                 = $request->file_type;
         $category->file_size                 = $request->file_size;
         $category->preview_file_types        = $request->preview_file_types;
-        $category->personal_buyer_fee        = $request->personal_buyer_fee;
-        $category->commercial_buyer_fee      = $request->commercial_buyer_fee;
-        $category->twelve_month_extended_fee = $request->twelve_month_extended_fee;
+        $category->personal_buyer_fee        = 0;
+        $category->commercial_buyer_fee      = 0;
+        $category->twelve_month_extended_fee = 0;
 
         if ($request->hasFile('image')) {
             try {

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CatalogModeController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -157,33 +158,33 @@ Route::middleware('admin')->group(function () {
     });
 
     // Coupons
-    Route::controller('ManageCouponsController')->prefix('coupon')->name('coupon.')->group(function () {
-        Route::get('', 'index')->name('index');
-        Route::get('create', 'create')->name('create');
-        Route::get('edit/{id}', 'edit')->name('edit');
-        Route::post('save/{id}', 'save')->name('store');
-        Route::post('status/{id}', 'status')->name('status');
+    Route::prefix('coupon')->name('coupon.')->group(function () {
+        Route::get('', [CatalogModeController::class, 'unavailable'])->name('index');
+        Route::get('create', [CatalogModeController::class, 'unavailable'])->name('create');
+        Route::get('edit/{id}', [CatalogModeController::class, 'unavailable'])->name('edit');
+        Route::post('save/{id}', [CatalogModeController::class, 'unavailable'])->name('store');
+        Route::post('status/{id}', [CatalogModeController::class, 'unavailable'])->name('status');
     });
 
-    Route::controller('SellController')->prefix('sales')->name('sell.')->group(function () {
-        Route::get('/', 'allSales')->name('all');
-        Route::get('/sale-items/{author_id?}', 'saleItems')->name('items');
-        Route::get('/refunded-items', 'refundedItems')->name('refunded');
-        Route::get('{id}/details', 'details')->name('details');
-        Route::get('{id}/all/details', 'allDetails')->name('all.details');
+    Route::prefix('sales')->name('sell.')->group(function () {
+        Route::get('/', [CatalogModeController::class, 'unavailable'])->name('all');
+        Route::get('/sale-items/{author_id?}', [CatalogModeController::class, 'unavailable'])->name('items');
+        Route::get('/refunded-items', [CatalogModeController::class, 'unavailable'])->name('refunded');
+        Route::get('{id}/details', [CatalogModeController::class, 'unavailable'])->name('details');
+        Route::get('{id}/all/details', [CatalogModeController::class, 'unavailable'])->name('all.details');
     });
 
     // Campaign
-    Route::controller('CampaignController')->prefix('campaign')->name('campaign.')->group(function () {
-        Route::get('index',  'index')->name('index');
-        Route::get('create', 'create')->name('create');
-        Route::post('store/{id}',  'store')->name('store');
-        Route::get('edit/{id}', 'edit')->name('edit');
-        Route::post('status/{id}', 'status')->name('status');
+    Route::prefix('campaign')->name('campaign.')->group(function () {
+        Route::get('index', [CatalogModeController::class, 'unavailable'])->name('index');
+        Route::get('create', [CatalogModeController::class, 'unavailable'])->name('create');
+        Route::post('store/{id}', [CatalogModeController::class, 'unavailable'])->name('store');
+        Route::get('edit/{id}', [CatalogModeController::class, 'unavailable'])->name('edit');
+        Route::post('status/{id}', [CatalogModeController::class, 'unavailable'])->name('status');
 
-        Route::get('submitted/products/{campaign}', 'showSubmittedProducts')->name('submitted.products');
-        Route::post('update/product/approve/{id}', 'approve')->name('update.product.approve');
-        Route::post('update/product/reject/{id}', 'reject')->name('update.product.reject');
+        Route::get('submitted/products/{campaign}', [CatalogModeController::class, 'unavailable'])->name('submitted.products');
+        Route::post('update/product/approve/{id}', [CatalogModeController::class, 'unavailable'])->name('update.product.approve');
+        Route::post('update/product/reject/{id}', [CatalogModeController::class, 'unavailable'])->name('update.product.reject');
     });
 
     // Users Manager
@@ -228,69 +229,69 @@ Route::middleware('admin')->group(function () {
     // Deposit Gateway
     Route::name('gateway.')->prefix('gateway')->group(function () {
         // Automatic Gateway
-        Route::controller('AutomaticGatewayController')->prefix('automatic')->name('automatic.')->group(function () {
-            Route::get('/', 'index')->name('index');
-            Route::get('edit/{alias}', 'edit')->name('edit');
-            Route::post('update/{code}', 'update')->name('update');
-            Route::post('remove/{id}', 'remove')->name('remove');
-            Route::post('status/{id}', 'status')->name('status');
+        Route::prefix('automatic')->name('automatic.')->group(function () {
+            Route::get('/', [CatalogModeController::class, 'unavailable'])->name('index');
+            Route::get('edit/{alias}', [CatalogModeController::class, 'unavailable'])->name('edit');
+            Route::post('update/{code}', [CatalogModeController::class, 'unavailable'])->name('update');
+            Route::post('remove/{id}', [CatalogModeController::class, 'unavailable'])->name('remove');
+            Route::post('status/{id}', [CatalogModeController::class, 'unavailable'])->name('status');
         });
 
 
         // Manual Methods
-        Route::controller('ManualGatewayController')->prefix('manual')->name('manual.')->group(function () {
-            Route::get('/', 'index')->name('index');
-            Route::get('new', 'create')->name('create');
-            Route::post('new', 'store')->name('store');
-            Route::get('edit/{alias}', 'edit')->name('edit');
-            Route::post('update/{id}', 'update')->name('update');
-            Route::post('status/{id}', 'status')->name('status');
+        Route::prefix('manual')->name('manual.')->group(function () {
+            Route::get('/', [CatalogModeController::class, 'unavailable'])->name('index');
+            Route::get('new', [CatalogModeController::class, 'unavailable'])->name('create');
+            Route::post('new', [CatalogModeController::class, 'unavailable'])->name('store');
+            Route::get('edit/{alias}', [CatalogModeController::class, 'unavailable'])->name('edit');
+            Route::post('update/{id}', [CatalogModeController::class, 'unavailable'])->name('update');
+            Route::post('status/{id}', [CatalogModeController::class, 'unavailable'])->name('status');
         });
     });
 
 
     // DEPOSIT SYSTEM
-    Route::controller('DepositController')->prefix('payment')->name('deposit.')->group(function () {
-        Route::get('all/{user_id?}', 'deposit')->name('list');
-        Route::get('pending/{user_id?}', 'pending')->name('pending');
-        Route::get('rejected/{user_id?}', 'rejected')->name('rejected');
-        Route::get('approved/{user_id?}', 'approved')->name('approved');
-        Route::get('successful/{user_id?}', 'successful')->name('successful');
-        Route::get('initiated/{user_id?}', 'initiated')->name('initiated');
-        Route::get('details/{id}', 'details')->name('details');
-        Route::post('reject', 'reject')->name('reject');
-        Route::post('approve/{id}', 'approve')->name('approve');
+    Route::prefix('payment')->name('deposit.')->group(function () {
+        Route::get('all/{user_id?}', [CatalogModeController::class, 'unavailable'])->name('list');
+        Route::get('pending/{user_id?}', [CatalogModeController::class, 'unavailable'])->name('pending');
+        Route::get('rejected/{user_id?}', [CatalogModeController::class, 'unavailable'])->name('rejected');
+        Route::get('approved/{user_id?}', [CatalogModeController::class, 'unavailable'])->name('approved');
+        Route::get('successful/{user_id?}', [CatalogModeController::class, 'unavailable'])->name('successful');
+        Route::get('initiated/{user_id?}', [CatalogModeController::class, 'unavailable'])->name('initiated');
+        Route::get('details/{id}', [CatalogModeController::class, 'unavailable'])->name('details');
+        Route::post('reject', [CatalogModeController::class, 'unavailable'])->name('reject');
+        Route::post('approve/{id}', [CatalogModeController::class, 'unavailable'])->name('approve');
     });
 
 
     // WITHDRAW SYSTEM
     Route::name('withdraw.')->prefix('withdraw')->group(function () {
 
-        Route::controller('WithdrawalController')->name('data.')->group(function () {
-            Route::get('pending/{user_id?}', 'pending')->name('pending');
-            Route::get('approved/{user_id?}', 'approved')->name('approved');
-            Route::get('rejected/{user_id?}', 'rejected')->name('rejected');
-            Route::get('all/{user_id?}', 'all')->name('all');
-            Route::get('details/{id}', 'details')->name('details');
-            Route::post('approve', 'approve')->name('approve');
-            Route::post('reject', 'reject')->name('reject');
+        Route::name('data.')->group(function () {
+            Route::get('pending/{user_id?}', [CatalogModeController::class, 'unavailable'])->name('pending');
+            Route::get('approved/{user_id?}', [CatalogModeController::class, 'unavailable'])->name('approved');
+            Route::get('rejected/{user_id?}', [CatalogModeController::class, 'unavailable'])->name('rejected');
+            Route::get('all/{user_id?}', [CatalogModeController::class, 'unavailable'])->name('all');
+            Route::get('details/{id}', [CatalogModeController::class, 'unavailable'])->name('details');
+            Route::post('approve', [CatalogModeController::class, 'unavailable'])->name('approve');
+            Route::post('reject', [CatalogModeController::class, 'unavailable'])->name('reject');
         });
 
 
         // Withdraw Method
-        Route::controller('WithdrawMethodController')->prefix('method')->name('method.')->group(function () {
-            Route::get('/', 'methods')->name('index');
-            Route::get('create', 'create')->name('create');
-            Route::post('create', 'store')->name('store');
-            Route::get('edit/{id}', 'edit')->name('edit');
-            Route::post('edit/{id}', 'update')->name('update');
-            Route::post('status/{id}', 'status')->name('status');
+        Route::prefix('method')->name('method.')->group(function () {
+            Route::get('/', [CatalogModeController::class, 'unavailable'])->name('index');
+            Route::get('create', [CatalogModeController::class, 'unavailable'])->name('create');
+            Route::post('create', [CatalogModeController::class, 'unavailable'])->name('store');
+            Route::get('edit/{id}', [CatalogModeController::class, 'unavailable'])->name('edit');
+            Route::post('edit/{id}', [CatalogModeController::class, 'unavailable'])->name('update');
+            Route::post('status/{id}', [CatalogModeController::class, 'unavailable'])->name('status');
         });
     });
 
     // Report
     Route::controller('ReportController')->prefix('report')->name('report.')->group(function () {
-        Route::get('transaction/{user_id?}', 'transaction')->name('transaction');
+        Route::get('transaction/{user_id?}', [CatalogModeController::class, 'unavailable'])->name('transaction');
         Route::get('login/history', 'loginHistory')->name('login.history');
         Route::get('login/ipHistory/{ip}', 'loginIpHistory')->name('login.ipHistory');
         Route::get('notification/history', 'notificationHistory')->name('notification.history');
@@ -341,8 +342,8 @@ Route::middleware('admin')->group(function () {
 
         Route::get('system-setting', 'systemSetting')->name('setting.system');
 
-        Route::get('license', 'licenseSetting')->name('setting.license');
-        Route::post('license', 'licenseSettingSubmit')->name('setting.license.update');
+        Route::get('license', [CatalogModeController::class, 'unavailable'])->name('setting.license');
+        Route::post('license', [CatalogModeController::class, 'unavailable'])->name('setting.license.update');
 
         // General Setting
         Route::get('general-setting', 'general')->name('setting.general');

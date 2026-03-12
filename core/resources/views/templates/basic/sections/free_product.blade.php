@@ -3,9 +3,7 @@
     $freeProducts = \App\Models\Product::approved()
         ->allActive()
         ->with('author')
-        ->withCount(['orderItems as total_sold'])
-        ->groupBy('products.id')
-        ->orderBy('total_sold', 'desc')
+        ->latest('published_at')
         ->where('is_free', Status::ENABLE)
         ->limit(10)
         ->get();

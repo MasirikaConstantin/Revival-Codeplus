@@ -77,9 +77,7 @@
         <div class="col-12">
             @include($activeTemplate . 'user.dashboard.widgets')
         </div>
-        @if ($author->is_author)
-            @include($activeTemplate . 'user.dashboard.recent_sales')
-        @else
+        @if (!$author->is_author)
             <div class="col-12">
                 <div class="card product-card">
                     <div class="card-body p-4">

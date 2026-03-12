@@ -43,8 +43,9 @@ class AuthorController extends Controller {
     public function portfolio($username = null) {
         abort_if(!$username, 404);
 
-        $sortBy    = request()->sort_by;
-        $orderBy   = request()->order_by ?? 'title';
+        $allowedOrderBy = ['title', 'published_at', 'last_updated', 'avg_rating'];
+        $orderBy        = request()->order_by;
+        $orderBy        = in_array($orderBy, $allowedOrderBy) ? $orderBy : 'title';
         $pageTitle = 'Portfolio';
         $author    = User::active()->author()->where("username", $username)->firstOrFail();
         $products  = $author->products()->searchable(['title'])->with('author', 'users');

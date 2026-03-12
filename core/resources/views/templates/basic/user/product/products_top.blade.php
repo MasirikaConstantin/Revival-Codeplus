@@ -3,7 +3,6 @@
     $filterOptions = [
         'new_item' => 'New Item',
         'best_rated' => 'Best Rated',
-        'best_selling' => 'Best Selling',
     ];
 @endphp
 <div class="product-top flex-between gap-3">

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CatalogController;
 use Illuminate\Support\Facades\Route;
 
 Route::namespace('User\Auth')->name('user.')->middleware('guest')->group(function () {
@@ -66,8 +67,8 @@ Route::middleware('auth')->name('user.')->group(function () {
                 Route::post('kyc-submit', 'kycSubmit')->name('kyc.submit');
 
                 //Report
-                Route::any('deposit/history', 'depositHistory')->name('deposit.history');
-                Route::get('transactions', 'transactions')->name('transactions');
+                Route::any('deposit/history', [CatalogController::class, 'unavailable'])->name('deposit.history');
+                Route::get('transactions', [CatalogController::class, 'unavailable'])->name('transactions');
 
                 Route::post('add-device-token', 'addDeviceToken')->name('add.device.token');
             });
@@ -80,9 +81,9 @@ Route::middleware('auth')->name('user.')->group(function () {
                 Route::post('change-password', 'submitPassword');
             });
 
-            Route::post('/order', 'OrderController@store')->name('order.store');
-            Route::get('/orders', 'OrderController@orderList')->name('order.list');
-            Route::get('/orders/{id}/details', 'OrderController@details')->name('order.details');
+            Route::post('/order', [CatalogController::class, 'unavailable'])->name('order.store');
+            Route::get('/orders', [CatalogController::class, 'unavailable'])->name('order.list');
+            Route::get('/orders/{id}/details', [CatalogController::class, 'unavailable'])->name('order.details');
 
             // api key generate
             Route::controller('ApiKeyController')->prefix('api-key')->name('api.key.')->group(function () {
@@ -110,38 +111,38 @@ Route::middleware('auth')->name('user.')->group(function () {
                 Route::post('follow/{user}', 'follow')->name('follow');
 
                 // only for author
-                Route::get('refunds', 'refunds')->name('refunds');
-                Route::get('refunds/{id}/activity', 'refundActivity')->name('refunds.activity');
-                Route::post('refunds/{id}/activity', 'refundActivityReply')->name('refunds.activity.reply');
+                Route::get('refunds', [CatalogController::class, 'unavailable'])->name('refunds');
+                Route::get('refunds/{id}/activity', [CatalogController::class, 'unavailable'])->name('refunds.activity');
+                Route::post('refunds/{id}/activity', [CatalogController::class, 'unavailable'])->name('refunds.activity.reply');
 
                 Route::middleware(['author'])->group(function () {
                     Route::get('hidden-items', 'hiddenItems')->name('hidden_items');
-                    Route::post('refunds/{id}/accept', 'acceptRefundRequest')->name('refunds.accept');
-                    Route::post('refunds/{id}/reject', 'rejectRefundRequest')->name('refunds.reject');
-                    Route::get('earning', 'earning')->name('earning');
+                    Route::post('refunds/{id}/accept', [CatalogController::class, 'unavailable'])->name('refunds.accept');
+                    Route::post('refunds/{id}/reject', [CatalogController::class, 'unavailable'])->name('refunds.reject');
+                    Route::get('earning', [CatalogController::class, 'unavailable'])->name('earning');
                     Route::get('reviews', 'reviewList')->name('reviews.index');
                     Route::post('reviews/{productId}/reply/{reviewId}', 'reviewReply')->name('review.reply');
-                    Route::get('sales', 'sells')->name('sells');
+                    Route::get('sales', [CatalogController::class, 'unavailable'])->name('sells');
                     Route::get('comments', 'commentList')->name('comments.index');
                     Route::get('comments/{commentId}/replies', 'repliesList')->name('comments.replies.index');
                     Route::post('comments/replies/{id}/delete', 'deleteReply')->name('comments.replies.delete');
                     Route::post('comments/{id}/report', 'reportComment')->name('comments.report');
                     Route::post('review/report', 'reportReview')->name('reviews.report');
                     //verify license
-                    Route::get('license/index', 'license')->name('license.index');
-                    Route::get('license/verify', 'verify')->name('license.verify');
+                    Route::get('license/index', [CatalogController::class, 'unavailable'])->name('license.index');
+                    Route::get('license/verify', [CatalogController::class, 'unavailable'])->name('license.verify');
                     //campaign
-                    Route::get('campaign/index', 'campaign')->name('campaign.index');
-                    Route::post('campaign/submit/products', 'submitProducts')->name('campaign.submit.products');
-                    Route::get('campaign/view/products', 'viewProducts')->name('campaign.view.products');
+                    Route::get('campaign/index', [CatalogController::class, 'unavailable'])->name('campaign.index');
+                    Route::post('campaign/submit/products', [CatalogController::class, 'unavailable'])->name('campaign.submit.products');
+                    Route::get('campaign/view/products', [CatalogController::class, 'unavailable'])->name('campaign.view.products');
 
-                    Route::get('referral', 'referralList')->name('referral.index');
+                    Route::get('referral', [CatalogController::class, 'unavailable'])->name('referral.index');
                 });
 
                 Route::post('comments/{productId}', 'saveComment')->name('comment.store');
                 Route::post('reviews/{productId}', 'saveReview')->name('review.store');
                 Route::post('free-reviews/{productId}', 'freeSaveReview')->name('free.review.store');
-                Route::get('download', 'download')->name('download');
+                Route::get('download', [CatalogController::class, 'unavailable'])->name('download');
                 Route::get('collections', 'collections')->name('collections');
                 Route::post('collections', 'storeCollection')->name('collections.store');
                 Route::post('collections/{id}/update', 'updateCollection')->name('collections.update');
@@ -151,33 +152,33 @@ Route::middleware('auth')->name('user.')->group(function () {
                 Route::get('favorites', 'favorites')->name('favorites');
                 Route::post('favorites', 'toggleFavorite')->name('favorites.toggle');
                 Route::delete('favorites', 'removeFavorite')->name('favorites.remove');
-                Route::get('checkout', 'checkout')->name('checkout');
+                Route::get('checkout', [CatalogController::class, 'unavailable'])->name('checkout');
                 Route::post('email/{authorId}', 'sendMailToAuthor')->name('mail');
-                Route::get('download-product/{purchaseCode}', 'downloadProduct')->name('product.download');
-                Route::get('download-free-product/{slug}', 'downloadFreeProduct')->name('product.free.download');
-                Route::post('refund/request/{purchase_code}', 'refundRequest')->name('refund.request');
-                Route::get('free-download', 'freeDownload')->name('free.download');
+                Route::get('download-product/{purchaseCode}', [CatalogController::class, 'unavailable'])->name('product.download');
+                Route::get('download-free-product/{slug}', [CatalogController::class, 'unavailable'])->name('product.free.download');
+                Route::post('refund/request/{purchase_code}', [CatalogController::class, 'unavailable'])->name('refund.request');
+                Route::get('free-download', [CatalogController::class, 'unavailable'])->name('free.download');
             });
 
             // Withdraw
-            Route::controller('WithdrawController')->prefix('withdraw')->name('withdraw')->group(function () {
+            Route::prefix('withdraw')->name('withdraw')->group(function () {
                 Route::middleware('kyc')->group(function () {
-                    Route::get('/', 'withdrawMoney');
-                    Route::post('/', 'withdrawStore')->name('.money');
-                    Route::get('preview', 'withdrawPreview')->name('.preview');
-                    Route::post('preview', 'withdrawSubmit')->name('.submit');
+                    Route::get('/', [CatalogController::class, 'unavailable']);
+                    Route::post('/', [CatalogController::class, 'unavailable'])->name('.money');
+                    Route::get('preview', [CatalogController::class, 'unavailable'])->name('.preview');
+                    Route::post('preview', [CatalogController::class, 'unavailable'])->name('.submit');
                 });
-                Route::get('history', 'withdrawLog')->name('.history');
+                Route::get('history', [CatalogController::class, 'unavailable'])->name('.history');
             });
         });
 
         // Payment
-        Route::prefix('deposit')->name('deposit.')->controller('Gateway\PaymentController')->group(function () {
-            Route::any('/', 'deposit')->name('index');
-            Route::post('insert', 'depositInsert')->name('insert');
-            Route::get('confirm', 'depositConfirm')->name('confirm');
-            Route::get('manual', 'manualDepositConfirm')->name('manual.confirm');
-            Route::post('manual', 'manualDepositUpdate')->name('manual.update');
+        Route::prefix('deposit')->name('deposit.')->group(function () {
+            Route::any('/', [CatalogController::class, 'unavailable'])->name('index');
+            Route::post('insert', [CatalogController::class, 'unavailable'])->name('insert');
+            Route::get('confirm', [CatalogController::class, 'unavailable'])->name('confirm');
+            Route::get('manual', [CatalogController::class, 'unavailable'])->name('manual.confirm');
+            Route::post('manual', [CatalogController::class, 'unavailable'])->name('manual.update');
         });
     });
 });
@@ -188,5 +189,5 @@ Route::controller('User\AuthorController')->name('user.')->prefix('/{username?}'
     Route::get('/portfolio', 'portfolio')->name('portfolio');
     Route::get('/followers', 'followers')->name('followers');
     Route::get('/following', 'following')->name('following');
-    Route::get('/purchase/details/{product_id}/{order_item_id}', 'purchaseDetails')->name('purchase.details');
+    Route::get('/purchase/details/{product_id}/{order_item_id}', [CatalogController::class, 'unavailable'])->name('purchase.details');
 });

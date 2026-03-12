@@ -14,12 +14,6 @@
                     <input type="search" class="form--control form--control--sm form-control"
                            placeholder="@lang('Search...')" name="search" value="{{ request()->search }}" />
                 </div>
-                <div class="d-flex gap-2 justify-content-between mb-3">
-                    <input type="number" class="form--control form--control--sm" placeholder="@lang('Min Price')"
-                           name="min_price" value="{{ @request()->min_price }}" />
-                    <input type="number" class="form--control form--control--sm" placeholder="@lang('Max Price')"
-                           name="max_price" value="{{ @request()->max_price }}" />
-                </div>
                 <button type="submit" class="btn btn-outline--base w-100 btn--sm"><i class="fa fa-search"></i>
                     @lang('Search')</button>
             </form>
@@ -52,14 +46,6 @@
 
             @if (request()->search)
                 <input type="hidden" name="search" value="{{ request()->search }}">
-            @endif
-
-            @if (request()->min_price)
-                <input type="hidden" name="min_price" value="{{ request()->min_price }}">
-            @endif
-
-            @if (request()->max_price)
-                <input type="hidden" name="max_price" value="{{ request()->max_price }}">
             @endif
 
             <div class="product-sidebar__item">

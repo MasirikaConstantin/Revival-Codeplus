@@ -24,8 +24,8 @@
         </div>
         @if(@$profile->is_author)
             <div class="follow-statistics">
-                <h6 class="fs-18 follow-statistics__number">{{ @$profile->total_sold }}</h6>
-                <span class="follow-statistics__text">@lang(str()->plural('Sale', @$profile->total_sold))</span>
+                <h6 class="fs-18 follow-statistics__number">{{ $profile->products()->approved()->count() }}</h6>
+                <span class="follow-statistics__text">@lang(str()->plural('Product', $profile->products()->approved()->count()))</span>
             </div>
         @endif
 

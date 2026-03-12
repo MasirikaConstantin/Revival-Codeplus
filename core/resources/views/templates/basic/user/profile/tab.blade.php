@@ -8,17 +8,12 @@
     @php
         $commentsCount = $author->comments()->where('review_id', Status::NO)->where('parent_id', Status::NO)->count();
         $reivewCount = $author->reviews->count();
-        $refundItemsCount = $author->refundRequests->where('status', Status::NO)->count();
-        $submittedRefundItemsCount = $author->submittedRefundRequests->where('status', Status::NO)->count();
-        $refundItemsCount += $submittedRefundItemsCount;
         $hiddenItems = $author
             ->products()
             ->whereIn('status', [Status::PRODUCT_PENDING, Status::PRODUCT_SOFT_REJECTED, Status::PRODUCT_DOWN])
             ->count();
-        $requestUsername = request()->username;
         $isAuthUser = auth()->check();
         $user = auth()->user();
-        $referralCount = $author->referrals()->count();
     @endphp
 
     <button class="custom-tab__prev"><i class="las la-angle-left"></i></button>
@@ -71,17 +66,6 @@
                 </a>
             </li>
 
-            @if ($isAuthUser && $user->username == $author->username)
-                <li class="custom-tab__item {{ menuActive('user.author.refunds') }}">
-                    <a href="{{ route('user.author.refunds') }}" class="custom-tab__link">
-                        @lang('Refunds')
-                        @if ($refundItemsCount > 0)
-                            <span class="notification">{{ $refundItemsCount }}</span>
-                        @endif
-                    </a>
-                </li>
-            @endif
-
             @if ($isAuthUser && $author->isAuthor() && $user->username == $author->username)
                 <li class="custom-tab__item {{ menuActive('user.author.hidden_items') }}">
                     <a href="{{ route('user.author.hidden_items') }}" class="custom-tab__link">
@@ -90,12 +74,6 @@
                             <span class="notification">{{ $hiddenItems }}</span>
                         @endif
                     </a>
-                </li>
-                <li class="custom-tab__item {{ menuActive('user.author.earning') }}">
-                    <a href="{{ route('user.author.earning') }}" class="custom-tab__link">@lang('Earning')</a>
-                </li>
-                <li class="custom-tab__item {{ menuActive('user.author.sells') }}">
-                    <a href="{{ route('user.author.sells') }}" class="custom-tab__link">@lang('Sales')</a>
                 </li>
                 <li class="custom-tab__item {{ menuActive('user.author.comments.index') }}">
                     <a href="{{ route('user.author.comments.index') }}" class="custom-tab__link">
@@ -113,32 +91,6 @@
                         @endif
                     </a>
                 </li>
-                <li class="custom-tab__item {{ menuActive('user.author.license.index') }}">
-                    <a href="{{ route('user.author.license.index') }}" class="custom-tab__link">@lang('Check licenses')</a>
-                </li>
-
-                @if (gs('referral'))
-                    <li class="custom-tab__item {{ menuActive('user.author.referral.index') }}">
-                        <a href="{{ route('user.author.referral.index') }}" class="custom-tab__link">
-                            @lang('Referral')
-                            @if ($referralCount > 0)
-                                <span class="notification">{{ $referralCount }}</span>
-                            @endif
-                        </a>
-                    </li>
-                @endif
-
-                @php
-                    $campaign = App\Models\Campaign::active()->latest()->first();
-                @endphp
-                @if ($campaign)
-                    <li class="custom-tab__item {{ menuActive('user.author.campaign.index') }}">
-                        <a href="{{ route('user.author.campaign.index') }}" class="custom-tab__link">
-                            @lang('Campaign')
-                            <span class="badge badge--base blinking">@lang('New')</span>
-                        </a>
-                    </li>
-                @endif
             @endif
         </ul>
     </div>

@@ -36,8 +36,8 @@
         </div>
         @if (auth()->check() && $author->is_author)
             <div class="sales-qty">
-                <span class="sales-qty__text">@lang(str()->plural('Sale', @$author->total_sold))</span>
-                <h4 class="sales-qty__number">{{ @$author->total_sold }}</h4>
+                <span class="sales-qty__text">@lang(str()->plural('Product', $author->products()->approved()->count()))</span>
+                <h4 class="sales-qty__number">{{ $author->products()->approved()->count() }}</h4>
             </div>
         @endif
     </div>

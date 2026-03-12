@@ -7,7 +7,6 @@
         'title' => 'Title',
         'published_at' => 'Date Published',
         'last_updated' => 'Date Updated',
-        'total_sold' => 'Sales',
         'avg_rating' => 'Rating',
     ];
 @endphp
@@ -41,13 +40,6 @@
                         @lang('Best Rated')
                     </a>
                 </li>
-                <li class="filter-button-list__item">
-                    <a href="{{ appendQuery(['sort_by' => 'best_selling', 'status' => '']) }}"
-                        class="filter-button-list__button {{ $sortBy === 'best_selling' ? 'active' : '' }}">
-                        @lang('Best Selling')
-                    </a>
-                </li>
-
                 @if (auth()->check() && auth()->id() == $author->id)
                     <li class="filter-button-list__item">
                         <a href="{{ appendQuery(['sort_by' => '', 'status' => 0]) }}"
@@ -85,7 +77,6 @@
             <select class="select form--control w-auto form--control--sm d-md-none d-block select2" data-minimum-results-for-search="-1">
                 <option value="new_item" {{ $sortBy == 'new_item' ? 'selected' : '' }}>@lang('New Item')</option>
                 <option value="best_rated" {{ $sortBy == 'best_rated' ? 'selected' : '' }}>@lang('Best Rated')</option>
-                <option value="best_selling" {{ $sortBy == 'best_selling' ? 'selected' : '' }}>@lang('Best Selling')</option>
             </select>
         </div>
 

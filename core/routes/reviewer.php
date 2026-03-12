@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CatalogController;
 use Illuminate\Support\Facades\Route;
 
 Route::namespace('Auth')->group(function () {
@@ -35,8 +36,8 @@ Route::middleware('reviewer')->group(function () {
 
     Route::controller('ProductController')->prefix('product')->name('product.')->group(function () {
         Route::post('/{slug}/assign', 'assignProduct')->name('assign');
-        Route::get('/{id}/download', 'downloadProduct')->name('download');
-        Route::get('/{id}/download-temp', 'downloadProductTemp')->name('download.temp');
+        Route::get('/{id}/download', [CatalogController::class, 'unavailable'])->name('download');
+        Route::get('/{id}/download-temp', [CatalogController::class, 'unavailable'])->name('download.temp');
         Route::get('/{id}/details', 'details')->name('details');
         Route::post('/{id}/approve', 'approveProduct')->name('approve');
         Route::post('/{id}/reject/{type}', 'rejectProduct')->name('reject')->where(['type' => '[1-5]']);

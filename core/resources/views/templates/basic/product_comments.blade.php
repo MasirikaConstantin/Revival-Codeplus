@@ -24,9 +24,6 @@
                                                 <a
                                                     href="{{ route('user.profile', $comment->user->username) }}">{{ $comment->user->fullname }}</a>
                                             </h6>
-                                            @if ($comment->user->orderItems->where('product_id', $product->id)->count())
-                                                <span>@lang('Purchased')</span>
-                                            @endif
                                         </div>
                                     </div>
                                     <span class="user-comment__time">{{ diffForHumans($comment->created_at) }}</span>

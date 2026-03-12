@@ -1,6 +1,5 @@
 @php
     $user = auth()->user();
-    $cartLength = cartCount();
 @endphp
 
 <div class="header-top" style="padding:10px 0;">
@@ -53,10 +52,6 @@
                             </li>
                         </ul>
                     @endguest
-                    <a href="{{ route('cart.index') }}" class="cart-button ms-0 d-block d-lg-none">
-                        <span class="cart-button__icon "><i class="icon-Add-to-Cart-Button"></i></span>
-                        <span class="cart-button__qty flex-center">{{ $cartLength }}</span>
-                    </a>
                     @auth
                         <div class="profile-info">
                             <button type="button" class="profile-info__button flex-align">
@@ -66,7 +61,7 @@
                                 </span>
                                 <span class="profile-info__content">
                                     <span class="profile-info__name">{{ @$user->username }} </span>
-                                    <span class="profile-info__text">{{ showAmount($user->balance) }}</span>
+                                    <span class="profile-info__text">@lang('Catalogue')</span>
                                 </span>
                             </button>
                             <div class="profile-dropdown">
@@ -98,24 +93,6 @@
                                             @lang('Profile')
                                         </a>
                                     </li>
-                                    <li class="profile-dropdown-list__item">
-                                        <a href="{{ route('user.author.download') }}"
-                                           class="profile-dropdown-list__link {{ menuActive('user.author.download') }} ">
-                                            <span class="icon"> <i
-                                                   class="la la-shopping-cart"></i></span>@lang('Purchased Item')</a>
-                                    </li>
-                                    <li class="profile-dropdown-list__item">
-                                        <a href="{{ route('user.author.free.download') }}"
-                                           class="profile-dropdown-list__link {{ menuActive('user.author.free.download') }} ">
-                                            <span class="icon"> <i class="la la-gift"></i></span>@lang('Free Item')</a>
-                                    </li>
-                                    <li class="profile-dropdown-list__item">
-                                        <a href="{{ route('user.order.list') }}"
-                                           class="profile-dropdown-list__link {{ menuActive('user.order.list') }}">
-                                            <span class="icon"><i class="la la-list"></i></span>
-                                            @lang('Purchase History')
-                                        </a>
-                                    </li>
                                     @if (auth()->check() && auth()->user()->isAuthor())
                                         <li class="profile-dropdown-list__item">
                                             <a href="{{ route('user.product.upload') }}"
@@ -124,20 +101,6 @@
                                                 @lang('Upload Item')</a>
                                         </li>
                                     @endif
-                                    <li class="profile-dropdown-list__item">
-                                        <a href="{{ route('user.withdraw.history') }}"
-                                           class="profile-dropdown-list__link {{ menuActive('user.withdraw.*') }}">
-                                            <span class="icon"><i class="la la-bank"></i></span>
-                                            @lang('Withdraw History')
-                                        </a>
-                                    </li>
-                                    <li class="profile-dropdown-list__item">
-                                        <a href="{{ route('user.transactions') }}"
-                                           class="profile-dropdown-list__link {{ menuActive('user.transactions') }}">
-                                            <span class="icon"><i class="la la-exchange-alt"></i></span>
-                                            @lang('Transactions')
-                                        </a>
-                                    </li>
                                     <li class="profile-dropdown-list__item">
                                         <a href="{{ route('ticket.index') }}"
                                            class="profile-dropdown-list__link {{ menuActive('ticket.*') }}">

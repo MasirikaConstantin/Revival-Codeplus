@@ -27,16 +27,7 @@ class UserController extends Controller
         $pendingProducts      = $author->products->where('status', Status::PRODUCT_PENDING)->count();
         $downProducts         = $author->products->where('status', Status::PRODUCT_DOWN)->count();
 
-        $query       = $author->soldItems();
-        $saleAmount  = $author->soldItems()->sum('seller_earning');
-
-        $recentSales = $author->soldItems()->with(['order' => function ($query) {
-            $query->where('payment_status', Status::PAYMENT_SUCCESS);
-        }])->latest()->with('product')->limit(10)->get();
-
-        $purchases           = $author->orderItems()->where('is_refunded', Status::NO);
-        $totalPurchaseAmount = $purchases->sum('product_price') + $purchases->sum('buyer_fee') + $purchases->sum('extended_amount');
-        return view('Template::user.dashboard', compact('saleAmount','pageTitle','recentSales','author','unRepliedComments','softRejectedProducts','unRepliedReviews','pendingProducts','downProducts','totalPurchaseAmount'));
+        return view('Template::user.dashboard', compact('pageTitle', 'author', 'unRepliedComments', 'softRejectedProducts', 'unRepliedReviews', 'pendingProducts', 'downProducts'));
     }
 
     public function depositHistory(Request $request)

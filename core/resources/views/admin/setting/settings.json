@@ -27,13 +27,6 @@
         "icon": "las la-list",
         "route_name": "admin.category.index"
     },
-    "license_information": {
-        "keyword": ["License Information", "License", "Software license", "License management", "License details", "Product license"],
-        "title": "License Information",
-        "subtitle": "View and manage software license information.",
-        "icon": "las la-life-ring",
-        "route_name": "admin.setting.license"
-    },
     "storage-configure": {
         "keyword": ["Storage", "Config", "Setting", "file storage", "file setting"],
         "title": "Storage Configure",
@@ -56,20 +49,6 @@
         "subtitle": "Control and configure overall notification elements of the system.",
         "icon": "las la-bell",
         "route_name": "admin.setting.notification.global.email"
-    },
-    "payment_gateways": {
-        "keyword": ["automatic", "manual", "configure payment gateways","aamarpay","amarpay","authorize","autorize.net","btcpay","btc pay","binance","blockchain","cashmaal","checkout","coinbase commerce","coingate","coinpayments","flutterwave","instamojo","mercado pago","mollie","nmi","now payments","nowpayments","payeer","paypal","paystack","paytm","perfect money","perfectmoney","razorpay","skrill","sslcommerz","stripe","twocheckout","two checkout","2checkout"],
-        "title": "Payment Gateways",
-        "subtitle": "Configure automatic or manual payment gateways to accept payment from users.",
-        "icon": "las la-credit-card",
-        "route_name": "admin.gateway.automatic.index"
-    },
-    "withdrawals_methods": {
-        "keyword": [ "manual withdrawal", "payout", "payment withdrawal", "withdrawal options", "withdrawal settings", "payout methods", "payout settings", "configure withdrawals", "configure payouts"],
-        "title": "Withdrawals Methods",
-        "subtitle": "Setup manual withdrawal method so that users of the system can make payout requests through those methods.",
-        "icon": "la la-bank",
-        "route_name": "admin.withdraw.method.index"
     },
     "seo_configuration": {
         "keyword": ["SEO", "meta title", "meta description", "meta keywords","optimization", "meta tags", "SEO configuration"],

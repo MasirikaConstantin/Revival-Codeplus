@@ -46,23 +46,7 @@
                            class="link">{{ __($product->author->fullname) }}</a>
                     </span>
                 </div>
-                @if ($product->is_free)
-                    <span class="product-card__price">@lang('Free')</span>
-                @else
-                    @php
-                        $hasDiscount = $product->campaign_product_price;
-                    @endphp
-
-                    <span class="product-card__price">
-                        @if ($hasDiscount[0])
-                            <del>{{ showAmount($product->productPrice('personal')) }}</del>
-                            <span class="text-success">{{ showAmount($hasDiscount[1]) }}</span>
-                        @else
-                            {{ showAmount($product->productPrice('personal')) }}
-                        @endif
-                    </span>
-                @endif
-
+                <span class="product-card__price">{{ __(@$product->category->name) }}</span>
             </div>
             <div class="collection-list list-style">
                 <x-product-save :product="$product" />
@@ -76,13 +60,7 @@
                         @php echo displayRating($product->avg_rating); @endphp
                     </div>
                 @endif
-                @if ($product->is_free)
-                    <span class="product-card__sales">{{ $product->download_count ?: 0 }}
-                        {{ __(str()->plural('Download', $product->download_count ?: 0)) }}</span>
-                @else
-                    <span class="product-card__sales">{{ $product->total_sold }}
-                        {{ __(str()->plural('Sale', $product->total_sold)) }}</span>
-                @endif
+                <span class="product-card__sales">{{ showDateTime($product->published_at ?? $product->created_at, 'd M Y') }}</span>
             </div>
 
             @if ($product->demo_url)

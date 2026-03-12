@@ -1,13 +1,9 @@
 @php
-    $endDate                   = now();
     $weeklyBestSelling         = getContent('weekly_selling_product.content', true);
     $weeklyBestSellingProducts = \App\Models\Product::approved()
         ->allActive()
         ->with('author')
-        ->withCount(['orderItems as total_sold'])
-        ->groupBy('products.id')
-        ->orderBy('total_sold','desc')
-        ->having('total_sold','>',0)
+        ->latest('published_at')
         ->limit(10)
         ->get();
 @endphp
@@ -18,9 +14,9 @@
     <div class="container">
         <div class="section-heading style-left flex-between gap-3">
             <div class="section-heading__inner">
-                <h4 class="section-heading__title">{{ __(@$weeklyBestSelling->data_values->title) }}</h4>
+                <h4 class="section-heading__title">@lang('Latest Products')</h4>
             </div>
-            <a href="{{ route('products') }}?sort_by=best_selling" class="btn btn--sm btn-outline--base">@lang('View All Items')</a>
+            <a href="{{ route('products') }}" class="btn btn--sm btn-outline--base">@lang('View All Items')</a>
         </div>
         <div class="weekly-best-selling-slider">
             @foreach ($weeklyBestSellingProducts as $product)

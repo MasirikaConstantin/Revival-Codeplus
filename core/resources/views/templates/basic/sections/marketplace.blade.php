@@ -1,8 +1,9 @@
 @php
     $bestSelling = getContent('marketplace.content', true);
     $bestSellingProducts = \App\Models\Product::approved()
+        ->allActive()
         ->with('author')
-        ->orderByDesc('total_sold')
+        ->latest('published_at')
         ->limit(5)
         ->get();
 @endphp
@@ -12,7 +13,7 @@
             <div class="section-heading__inner">
                 <h4 class="section-heading__title">{{ __(@$bestSelling->data_values->title) }}</h4>
             </div>
-            <a href="{{ route('products') }}?sort_by=best_selling" class="btn btn-outline--base btn--sm">@lang('View All Items')</a>
+            <a href="{{ route('products') }}" class="btn btn-outline--base btn--sm">@lang('View All Items')</a>
         </div>
         <div class="browse-best-selling-slider">
             @foreach ($bestSellingProducts as $product)

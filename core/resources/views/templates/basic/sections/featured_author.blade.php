@@ -5,7 +5,7 @@
         ->where('status', Status::USER_ACTIVE)
         ->with([
             'products' => function ($query) {
-                $query->where('status', Status::YES)->orderByDesc('total_sold')->limit(4);
+                $query->approved()->latest()->limit(4);
             },
         ])
         ->first();

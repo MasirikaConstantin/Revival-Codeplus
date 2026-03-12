@@ -45,21 +45,6 @@
                                     <span class="fw-bold">@lang('Subcategory')</span>
                                     <span>{{ __(@$product->subCategory->name) }}</span>
                                 </li>
-                                @if (!$product->is_free)
-                                    <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                                        <span class="fw-bold">@lang('Price')(@lang('Regular License'))</span>
-                                        <span>{{ showAmount($product->price) }}</span>
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                                        <span class="fw-bold">@lang('Price')(@lang('Commercial License'))</span>
-                                        <span>{{ showAmount($product->price_cl) }}</span>
-                                    </li>
-                                @else
-                                    <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                                        <span class="fw-bold">@lang('Price')</span>
-                                        <span class="badge badge--success">@lang('Free')</span>
-                                    </li>
-                                @endif
                                 <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                                     <span class="fw-bold">@lang('Status')</span>
                                     <?php echo $product->statusBadge; ?>

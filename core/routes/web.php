@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CatalogController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/clear', function(){
@@ -19,14 +20,14 @@ Route::controller('TicketController')->prefix('ticket')->name('ticket.')->group(
     Route::get('download/{attachment_id}', 'ticketDownload')->name('download');
 });
 
-Route::get('app/deposit/confirm/{hash}', 'Gateway\PaymentController@appDepositConfirm')->name('deposit.app.confirm');
+Route::get('app/deposit/confirm/{hash}', [CatalogController::class, 'unavailable'])->name('deposit.app.confirm');
 
-Route::controller('CartController')->prefix('cart')->name('cart.')->group(function () {
-    Route::get('/', 'index')->name('index');
-    Route::post('/', 'store')->name('store');
-    Route::delete('/{id}', 'delete')->name('delete');
-    Route::get('/toggle-extended/{id}', 'toggleExtended')->name('extended.toggle');
-    Route::get('/apply-coupon', 'applyCoupon')->name('apply.coupon');
+Route::prefix('cart')->name('cart.')->group(function () {
+    Route::get('/', [CatalogController::class, 'unavailable'])->name('index');
+    Route::post('/', [CatalogController::class, 'unavailable'])->name('store');
+    Route::delete('/{id}', [CatalogController::class, 'unavailable'])->name('delete');
+    Route::get('/toggle-extended/{id}', [CatalogController::class, 'unavailable'])->name('extended.toggle');
+    Route::get('/apply-coupon', [CatalogController::class, 'unavailable'])->name('apply.coupon');
 });
 
 Route::controller('SiteController')->group(function () {
@@ -55,5 +56,5 @@ Route::controller('SiteController')->group(function () {
 
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::get('collections/{id}/add-to-cart', 'CartController@collectionToCart')->name('collections.cart');
+    Route::get('collections/{id}/add-to-cart', [CatalogController::class, 'unavailable'])->name('collections.cart');
 });

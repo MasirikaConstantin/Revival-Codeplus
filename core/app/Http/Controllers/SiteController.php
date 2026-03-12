@@ -51,7 +51,7 @@ class SiteController extends Controller
     {
         $pageTitle = "Products";
         $request   = request();
-        $query     = Product::approved()->allActive()->where('is_free', Status::DISABLE);
+        $query     = Product::approved()->allActive();
 
         if ($request->search) {
             $search = $request->search;
@@ -62,14 +62,6 @@ class SiteController extends Controller
                         $qq->where("username", "Like", "%" . $search . "%");
                     });
             });
-        }
-
-        if ($request->min_price) {
-            $query->where('price', '>=', $request->min_price);
-        }
-
-        if ($request->max_price) {
-            $query->where('price', '<=', $request->max_price);
         }
 
         if ($request->category && $request->category != 'all') {
@@ -91,9 +83,7 @@ class SiteController extends Controller
 
         if ($request->sort_by) {
             $sortBy = $request->sort_by;
-            $query->when($sortBy == 'best_selling', function ($query) {
-                $query->orderByDesc('total_sold');
-            })->when($sortBy == 'best_rated', function ($query) {
+            $query->when($sortBy == 'best_rated', function ($query) {
                 $query->orderByDesc('avg_rating');
             })->when($sortBy == 'new_item', function ($query) {
                 $query->orderByDesc('created_at');
@@ -137,18 +127,7 @@ class SiteController extends Controller
 
     public function freeProducts()
     {
-        $pageTitle  = "Products";
-        $categories = Category::active()
-            ->with([
-                'products' => function ($query) {
-                    $query->approved()->allActive()->where('is_free', Status::ENABLE)->orderBy('id', 'desc');
-                },
-                'products.author',
-                'products.users',
-            ])
-            ->get();
-        $products = Product::with('author')->searchable(['title'])->approved()->allActive()->where('is_free', Status::ENABLE)->latest()->paginate(getPaginate(16));
-        return view('Template::free_products', compact('pageTitle', 'categories', 'products'));
+        return to_route('products');
     }
 
     public function productDetails($slug)
@@ -218,7 +197,7 @@ class SiteController extends Controller
             ->when($commentId, function ($query) use ($commentId) {
                 $query->where('id', $commentId);
             })
-            ->with(['user', 'user.orderItems', 'product', 'replies' => function ($replyQuery) {
+            ->with(['user', 'product', 'replies' => function ($replyQuery) {
                 $replyQuery->with('user');
             }])->paginate(getPaginate());
         $pageTitle = 'Comments';

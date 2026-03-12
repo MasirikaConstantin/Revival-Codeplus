@@ -42,44 +42,9 @@
 
                             <ul class="list-group list-group-flush ">
                                 <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                                    <span class="fw-bold">@lang('Project Files')</span>
-                                    <span>
-                                        @if ($product->file)
-                                            <a
-                                               href="{{ route('reviewer.product.download', $product->id) }}?time={{ time() }}">
-                                                <i class="las la-download"></i>
-                                                @lang('Download File')
-                                            </a>
-                                        @endif
-                                        @if ($product->product_updated == Status::PRODUCT_UPDATE_PENDING || $product->status == Status::PRODUCT_PENDING)
-                                            @php $hasFile = true; @endphp
-                                            <a
-                                               href="{{ route('reviewer.product.download.temp', $product->id) }}?time={{ time() }}">
-                                                <i class="las la-download"></i>
-                                                @lang('Download Updated File')
-                                            </a>
-                                        @endif
-                                    </span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                                     <span class="fw-bold">@lang('Category')</span>
                                     <span>{{ @$product->category->name }}</span>
                                 </li>
-                                @if (!$product->is_free)
-                                    <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                                        <span class="fw-bold">@lang('Price')(@lang('Regular License'))</span>
-                                        <span>{{ showAmount($product->price) }}</span>
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                                        <span class="fw-bold">@lang('Price')(@lang('Commercial License'))</span>
-                                        <span>{{ showAmount($product->price_cl) }}</span>
-                                    </li>
-                                @else
-                                    <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                                        <span class="fw-bold">@lang('Price')</span>
-                                        <span class="badge badge--success">@lang('Free')</span>
-                                    </li>
-                                @endif
                                 <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                                     <span class="fw-bold">@lang('Status')</span>
                                     <?php echo $product->statusBadge; ?>
@@ -89,7 +54,7 @@
                                     <?php echo $product->updateStatusBadge; ?>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                                    <span class="fw-bold">@lang('Demo')</span>
+                                    <span class="fw-bold">@lang('Preview')</span>
                                     @if (@$product->category->file_type == 'audio')
                                         <a href="{{ asset(getFilePath('previewFile')) . '/' . productFilePath($product, 'temp_audio_file') . '/' . @$product->audio_temp_file }}" download="">@lang('Download Preview')</a>
                                     @else

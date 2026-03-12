@@ -4,11 +4,8 @@ namespace App\Http\Controllers\Admin;
 use App\Constants\Status;
 use App\Http\Controllers\Controller;
 use App\Lib\UserNotificationSender;
-use App\Models\Deposit;
 use App\Models\NotificationLog;
-use App\Models\Transaction;
 use App\Models\User;
-use App\Models\Withdrawal;
 use App\Rules\FileTypeValidate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -85,15 +82,12 @@ class ManageUsersController extends Controller {
     }
 
     public function detail($id) {
-        $user      = User::withCount(['products', 'reviews', 'orderItems', 'soldItems', 'comments'])->findOrFail($id);
+        $user      = User::withCount(['products', 'reviews', 'comments'])->findOrFail($id);
         $prefix    = $user->is_author ? 'Author ' : 'User ';
         $pageTitle = $prefix . 'Detail - ' . $user->username;
 
-        $totalDeposit     = Deposit::where('user_id', $user->id)->successful()->sum('amount');
-        $totalWithdrawals = Withdrawal::where('user_id', $user->id)->approved()->sum('amount');
-        $totalTransaction = Transaction::where('user_id', $user->id)->count();
         $countries        = json_decode(file_get_contents(resource_path('views/partials/country.json')));
-        return view('admin.users.detail', compact('pageTitle', 'user', 'totalDeposit', 'totalWithdrawals', 'totalTransaction', 'countries'));
+        return view('admin.users.detail', compact('pageTitle', 'user', 'countries'));
     }
 
     public function kycDetails($id) {
