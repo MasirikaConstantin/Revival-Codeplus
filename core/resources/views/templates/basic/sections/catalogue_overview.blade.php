@@ -9,18 +9,24 @@
         ->limit(5)
         ->get();
 
+    $featuredCategoriesCount = App\Models\Category::active()->featured()->count();
+    $activeCategoriesCount = App\Models\Category::active()->count();
+
     $overviewStats = [
         [
             'label' => 'Approved Resources',
             'value' => App\Models\Product::approved()->allActive()->count(),
+            'accent' => 'cyan',
         ],
         [
-            'label' => 'Featured Categories',
-            'value' => App\Models\Category::active()->featured()->count(),
+            'label' => $featuredCategoriesCount ? 'Featured Categories' : 'Active Categories',
+            'value' => $featuredCategoriesCount ?: $activeCategoriesCount,
+            'accent' => 'blue',
         ],
         [
             'label' => 'Verified Authors',
             'value' => App\Models\User::active()->author()->count(),
+            'accent' => 'mint',
         ],
     ];
 
@@ -74,13 +80,19 @@
                 </div>
                 <div class="col-xxl-5 col-xl-12">
                     <div class="catalogue-overview__stack">
-                        <div class="catalogue-overview__stats">
-                            @foreach ($overviewStats as $stat)
-                                <article class="catalogue-overview__stat-card">
-                                    <span class="catalogue-overview__stat-value">{{ number_format($stat['value']) }}</span>
-                                    <span class="catalogue-overview__stat-label">@lang($stat['label'])</span>
-                                </article>
-                            @endforeach
+                        <div class="catalogue-overview__stats-panel">
+                            <div class="catalogue-overview__stats-head">
+                                <span class="catalogue-overview__stats-kicker">@lang('Catalogue Pulse')</span>
+                                <p class="catalogue-overview__stats-copy">@lang('A quick snapshot of what is live in the catalogue right now.')</p>
+                            </div>
+                            <div class="catalogue-overview__stats">
+                                @foreach ($overviewStats as $stat)
+                                    <article class="catalogue-overview__stat-card catalogue-overview__stat-card--{{ $stat['accent'] }}">
+                                        <span class="catalogue-overview__stat-label">@lang($stat['label'])</span>
+                                        <span class="catalogue-overview__stat-value">{{ number_format($stat['value']) }}</span>
+                                    </article>
+                                @endforeach
+                            </div>
                         </div>
 
                         @if ($featuredAuthor)
@@ -210,6 +222,42 @@
             height: 100%;
         }
 
+        .catalogue-overview__stats-panel {
+            padding: 24px;
+            border-radius: 28px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+        }
+
+        .catalogue-overview__stats-head {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+
+        .catalogue-overview__stats-kicker {
+            display: inline-flex;
+            align-items: center;
+            width: fit-content;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: rgba(128, 241, 255, 0.08);
+            color: #80f1ff;
+            font-size: 1.15rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .catalogue-overview__stats-copy {
+            margin: 0;
+            color: rgba(255, 255, 255, 0.62);
+            font-size: 1.45rem;
+            line-height: 1.7;
+        }
+
         .catalogue-overview__stats {
             display: grid;
             gap: 16px;
@@ -225,6 +273,37 @@
             box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
         }
 
+        .catalogue-overview__stat-card {
+            position: relative;
+            overflow: hidden;
+            min-height: 170px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.03));
+        }
+
+        .catalogue-overview__stat-card::before {
+            content: "";
+            position: absolute;
+            inset: 0 auto auto 0;
+            width: 100%;
+            height: 3px;
+            opacity: 0.9;
+        }
+
+        .catalogue-overview__stat-card--cyan::before {
+            background: linear-gradient(90deg, #46e7ff, transparent);
+        }
+
+        .catalogue-overview__stat-card--blue::before {
+            background: linear-gradient(90deg, #7e8dff, transparent);
+        }
+
+        .catalogue-overview__stat-card--mint::before {
+            background: linear-gradient(90deg, #59f5c0, transparent);
+        }
+
         .catalogue-overview__stat-value {
             display: block;
             color: hsl(var(--white));
@@ -236,11 +315,11 @@
 
         .catalogue-overview__stat-label {
             display: block;
-            margin-top: 12px;
+            margin-top: 0;
             color: rgba(255, 255, 255, 0.62);
-            font-size: 1.55rem;
-            line-height: 1.65;
-            text-wrap: balance;
+            font-size: 1.45rem;
+            line-height: 1.6;
+            max-width: 12ch;
         }
 
         .catalogue-overview__author-head {
@@ -291,11 +370,17 @@
 
         @media screen and (max-width: 1399px) {
             .catalogue-overview__stats {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
             }
 
             .catalogue-overview__title {
                 max-width: 12em;
+            }
+        }
+
+        @media screen and (max-width: 1199px) {
+            .catalogue-overview__stats {
+                grid-template-columns: 1fr;
             }
         }
 

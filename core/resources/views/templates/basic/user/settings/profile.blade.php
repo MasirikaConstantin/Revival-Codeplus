@@ -8,8 +8,11 @@
                         <label for="fileUpload" class="form--label">@lang('Upload a New Avatar')</label>
                         <input type="file" class="form--control form--control--sm  bg--white"
                             name="avatar" id="fileUpload" accept=".png, .jpg, .jpeg" />
-                        <span class="alert-message fs-14">@lang('Supported Files: .png, .jpg, .jpeg') @lang('& must be')
-                            <b>{{ getFileSize('authorThumbnail') }}</b> @lang('px')</b></span>
+                        <span class="alert-message fs-14">
+                            @lang('Supported Files: .png, .jpg, .jpeg')
+                            @lang('& must be square with a minimum size of')
+                            <b>{{ getFileSize('authorThumbnail') }}</b>
+                        </span>
                     </div>
                 </div>
                 <div class="col-sm-6 col-xsm-6">
