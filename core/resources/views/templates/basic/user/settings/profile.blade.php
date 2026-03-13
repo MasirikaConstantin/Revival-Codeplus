@@ -10,8 +10,7 @@
                             name="avatar" id="fileUpload" accept=".png, .jpg, .jpeg" />
                         <span class="alert-message fs-14">
                             @lang('Supported Files: .png, .jpg, .jpeg')
-                            @lang('& must be square with a minimum size of')
-                            <b>{{ getFileSize('authorThumbnail') }}</b>
+                            @lang('& will be resized automatically for your profile avatar')
                         </span>
                     </div>
                 </div>

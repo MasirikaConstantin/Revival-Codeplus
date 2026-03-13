@@ -46,7 +46,7 @@
     <div class="container">
         <div class="catalogue-overview__shell">
             <div class="row g-4 align-items-stretch">
-                <div class="col-xxl-7 col-xl-12">
+                <div class="col-xxl-8 col-xl-12">
                     <div class="catalogue-overview__lead">
                         <span class="catalogue-overview__eyebrow">@lang('Signal Layers')</span>
                         <h2 class="catalogue-overview__title">@lang('A cleaner way to explore digital work')</h2>
@@ -78,7 +78,7 @@
                         @endif
                     </div>
                 </div>
-                <div class="col-xxl-5 col-xl-12">
+                <div class="col-xxl-4 col-xl-12">
                     <div class="catalogue-overview__stack">
                         <div class="catalogue-overview__stats-panel">
                             <div class="catalogue-overview__stats-head">
@@ -88,7 +88,10 @@
                             <div class="catalogue-overview__stats">
                                 @foreach ($overviewStats as $stat)
                                     <article class="catalogue-overview__stat-card catalogue-overview__stat-card--{{ $stat['accent'] }}">
-                                        <span class="catalogue-overview__stat-label">@lang($stat['label'])</span>
+                                        <span class="catalogue-overview__stat-copy">
+                                            <span class="catalogue-overview__stat-dot"></span>
+                                            <span class="catalogue-overview__stat-label">@lang($stat['label'])</span>
+                                        </span>
                                         <span class="catalogue-overview__stat-value">{{ number_format($stat['value']) }}</span>
                                     </article>
                                 @endforeach
@@ -220,6 +223,7 @@
             display: grid;
             gap: 20px;
             height: 100%;
+            align-content: start;
         }
 
         .catalogue-overview__stats-panel {
@@ -261,7 +265,7 @@
         .catalogue-overview__stats {
             display: grid;
             gap: 16px;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
+            grid-template-columns: 1fr;
         }
 
         .catalogue-overview__stat-card,
@@ -276,10 +280,11 @@
         .catalogue-overview__stat-card {
             position: relative;
             overflow: hidden;
-            min-height: 170px;
+            min-height: 0;
             display: flex;
-            flex-direction: column;
+            align-items: center;
             justify-content: space-between;
+            gap: 18px;
             background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.03));
         }
 
@@ -290,6 +295,36 @@
             width: 100%;
             height: 3px;
             opacity: 0.9;
+        }
+
+        .catalogue-overview__stat-copy {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+            flex: 1;
+        }
+
+        .catalogue-overview__stat-dot {
+            flex: none;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: currentColor;
+            opacity: 0.9;
+            box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.04);
+        }
+
+        .catalogue-overview__stat-card--cyan {
+            color: #46e7ff;
+        }
+
+        .catalogue-overview__stat-card--blue {
+            color: #8c98ff;
+        }
+
+        .catalogue-overview__stat-card--mint {
+            color: #59f5c0;
         }
 
         .catalogue-overview__stat-card--cyan::before {
@@ -307,19 +342,20 @@
         .catalogue-overview__stat-value {
             display: block;
             color: hsl(var(--white));
-            font-size: 3.6rem;
+            font-size: 4.2rem;
             font-weight: 700;
             line-height: 1;
             letter-spacing: -0.03em;
+            flex: none;
         }
 
         .catalogue-overview__stat-label {
             display: block;
             margin-top: 0;
-            color: rgba(255, 255, 255, 0.62);
-            font-size: 1.45rem;
-            line-height: 1.6;
-            max-width: 12ch;
+            color: rgba(255, 255, 255, 0.78);
+            font-size: 1.55rem;
+            line-height: 1.45;
+            max-width: none;
         }
 
         .catalogue-overview__author-head {
@@ -369,18 +405,14 @@
         }
 
         @media screen and (max-width: 1399px) {
-            .catalogue-overview__stats {
-                grid-template-columns: repeat(3, minmax(0, 1fr));
-            }
-
             .catalogue-overview__title {
                 max-width: 12em;
             }
         }
 
         @media screen and (max-width: 1199px) {
-            .catalogue-overview__stats {
-                grid-template-columns: 1fr;
+            .catalogue-overview__shell {
+                padding: 32px;
             }
         }
 
@@ -390,12 +422,19 @@
                 border-radius: 24px;
             }
 
-            .catalogue-overview__stats {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
-
             .catalogue-overview__desc {
                 font-size: 1.7rem;
+            }
+        }
+
+        @media screen and (max-width: 575px) {
+            .catalogue-overview__stat-card {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .catalogue-overview__stat-value {
+                font-size: 3.4rem;
             }
         }
 

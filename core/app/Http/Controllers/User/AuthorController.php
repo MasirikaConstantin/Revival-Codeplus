@@ -717,7 +717,7 @@ class AuthorController extends Controller {
             'username'  => 'required|unique:users,username,' . $user->id,
             'firstname' => 'required',
             'lastname'  => 'required',
-            'avatar'    => ['nullable', 'image', new FileTypeValidate(['jpg', 'jpeg', 'png']), "dimensions:ratio=1/1,min_width=$thumbnailSize[0],min_height=$thumbnailSize[1]"],
+            'avatar'    => ['nullable', 'image', new FileTypeValidate(['jpg', 'jpeg', 'png'])],
             'cover_img' => ['nullable', 'image', new FileTypeValidate(['jpg', 'jpeg', 'png']), "dimensions:width=$coverImgSize[0],height=$coverImgSize[1]"],
         ]);
 
