@@ -29,6 +29,8 @@
             'accent' => 'mint',
         ],
     ];
+    $primaryStat = $overviewStats[0];
+    $secondaryStats = array_slice($overviewStats, 1);
 
     $featuredAuthor = App\Models\User::active()
         ->author()
@@ -86,15 +88,25 @@
                                 <p class="catalogue-overview__stats-copy">@lang('A quick snapshot of what is live in the catalogue right now.')</p>
                             </div>
                             <div class="catalogue-overview__stats">
-                                @foreach ($overviewStats as $stat)
-                                    <article class="catalogue-overview__stat-card catalogue-overview__stat-card--{{ $stat['accent'] }}">
-                                        <span class="catalogue-overview__stat-copy">
-                                            <span class="catalogue-overview__stat-dot"></span>
-                                            <span class="catalogue-overview__stat-label">@lang($stat['label'])</span>
-                                        </span>
-                                        <span class="catalogue-overview__stat-value">{{ number_format($stat['value']) }}</span>
-                                    </article>
-                                @endforeach
+                                <article class="catalogue-overview__stat-card catalogue-overview__stat-card--primary catalogue-overview__stat-card--{{ $primaryStat['accent'] }}">
+                                    <span class="catalogue-overview__stat-copy">
+                                        <span class="catalogue-overview__stat-dot"></span>
+                                        <span class="catalogue-overview__stat-label">@lang($primaryStat['label'])</span>
+                                    </span>
+                                    <span class="catalogue-overview__stat-value">{{ number_format($primaryStat['value']) }}</span>
+                                </article>
+
+                                <div class="catalogue-overview__stats-secondary">
+                                    @foreach ($secondaryStats as $stat)
+                                        <article class="catalogue-overview__stat-card catalogue-overview__stat-card--compact catalogue-overview__stat-card--{{ $stat['accent'] }}">
+                                            <span class="catalogue-overview__stat-copy">
+                                                <span class="catalogue-overview__stat-dot"></span>
+                                                <span class="catalogue-overview__stat-label">@lang($stat['label'])</span>
+                                            </span>
+                                            <span class="catalogue-overview__stat-value">{{ number_format($stat['value']) }}</span>
+                                        </article>
+                                    @endforeach
+                                </div>
                             </div>
                         </div>
 
@@ -268,6 +280,12 @@
             grid-template-columns: 1fr;
         }
 
+        .catalogue-overview__stats-secondary {
+            display: grid;
+            gap: 16px;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
         .catalogue-overview__stat-card,
         .catalogue-overview__author-card {
             padding: 24px 22px;
@@ -286,6 +304,24 @@
             justify-content: space-between;
             gap: 18px;
             background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.03));
+        }
+
+        .catalogue-overview__stat-card--primary {
+            min-height: 220px;
+            padding: 28px;
+            align-items: flex-start;
+            flex-direction: column;
+            justify-content: space-between;
+            background:
+                radial-gradient(circle at top right, rgba(255, 255, 255, 0.1), transparent 36%),
+                linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.03));
+        }
+
+        .catalogue-overview__stat-card--compact {
+            min-height: 152px;
+            align-items: flex-start;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .catalogue-overview__stat-card::before {
@@ -347,6 +383,15 @@
             line-height: 1;
             letter-spacing: -0.03em;
             flex: none;
+        }
+
+        .catalogue-overview__stat-card--primary .catalogue-overview__stat-value {
+            font-size: 7rem;
+            line-height: 0.95;
+        }
+
+        .catalogue-overview__stat-card--compact .catalogue-overview__stat-value {
+            font-size: 4.6rem;
         }
 
         .catalogue-overview__stat-label {
@@ -428,6 +473,10 @@
         }
 
         @media screen and (max-width: 575px) {
+            .catalogue-overview__stats-secondary {
+                grid-template-columns: 1fr;
+            }
+
             .catalogue-overview__stat-card {
                 align-items: flex-start;
                 flex-direction: column;
@@ -435,6 +484,11 @@
 
             .catalogue-overview__stat-value {
                 font-size: 3.4rem;
+            }
+
+            .catalogue-overview__stat-card--primary .catalogue-overview__stat-value,
+            .catalogue-overview__stat-card--compact .catalogue-overview__stat-value {
+                font-size: 4.4rem;
             }
         }
 
