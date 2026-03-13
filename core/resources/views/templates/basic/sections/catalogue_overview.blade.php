@@ -40,7 +40,7 @@
     <div class="container">
         <div class="catalogue-overview__shell">
             <div class="row g-4 align-items-stretch">
-                <div class="col-xl-7">
+                <div class="col-xxl-7 col-xl-12">
                     <div class="catalogue-overview__lead">
                         <span class="catalogue-overview__eyebrow">@lang('Signal Layers')</span>
                         <h2 class="catalogue-overview__title">@lang('A cleaner way to explore digital work')</h2>
@@ -72,7 +72,7 @@
                         @endif
                     </div>
                 </div>
-                <div class="col-xl-5">
+                <div class="col-xxl-5 col-xl-12">
                     <div class="catalogue-overview__stack">
                         <div class="catalogue-overview__stats">
                             @foreach ($overviewStats as $stat)
@@ -113,7 +113,7 @@
     <style>
         .catalogue-overview__shell {
             position: relative;
-            padding: 34px;
+            padding: 42px;
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 34px;
             background:
@@ -138,29 +138,30 @@
         }
 
         .catalogue-overview__title {
-            margin: 18px 0 14px;
+            max-width: 9.5em;
+            margin: 20px 0 18px;
             color: hsl(var(--white));
             font-size: clamp(2.8rem, 4vw, 4.8rem);
-            line-height: 1.05;
+            line-height: 1.08;
         }
 
         .catalogue-overview__desc {
             max-width: 58rem;
-            margin-bottom: 28px;
+            margin-bottom: 32px;
             color: rgba(255, 255, 255, 0.72);
-            font-size: 1.7rem;
-            line-height: 1.7;
+            font-size: 1.9rem;
+            line-height: 1.8;
         }
 
         .catalogue-overview__actions {
             display: flex;
             flex-wrap: wrap;
             gap: 14px;
-            margin-bottom: 28px;
+            margin-bottom: 34px;
         }
 
         .catalogue-overview__category-block {
-            padding-top: 18px;
+            padding-top: 24px;
             border-top: 1px solid rgba(255, 255, 255, 0.08);
         }
 
@@ -205,19 +206,19 @@
 
         .catalogue-overview__stack {
             display: grid;
-            gap: 18px;
+            gap: 20px;
             height: 100%;
         }
 
         .catalogue-overview__stats {
             display: grid;
-            gap: 14px;
+            gap: 16px;
             grid-template-columns: repeat(3, minmax(0, 1fr));
         }
 
         .catalogue-overview__stat-card,
         .catalogue-overview__author-card {
-            padding: 22px;
+            padding: 24px 22px;
             border-radius: 24px;
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -227,17 +228,19 @@
         .catalogue-overview__stat-value {
             display: block;
             color: hsl(var(--white));
-            font-size: 2.7rem;
+            font-size: 3.6rem;
             font-weight: 700;
             line-height: 1;
+            letter-spacing: -0.03em;
         }
 
         .catalogue-overview__stat-label {
             display: block;
-            margin-top: 10px;
+            margin-top: 12px;
             color: rgba(255, 255, 255, 0.62);
-            font-size: 1.35rem;
-            line-height: 1.5;
+            font-size: 1.55rem;
+            line-height: 1.65;
+            text-wrap: balance;
         }
 
         .catalogue-overview__author-head {
@@ -286,6 +289,16 @@
             font-weight: 600;
         }
 
+        @media screen and (max-width: 1399px) {
+            .catalogue-overview__stats {
+                grid-template-columns: 1fr;
+            }
+
+            .catalogue-overview__title {
+                max-width: 12em;
+            }
+        }
+
         @media screen and (max-width: 991px) {
             .catalogue-overview__shell {
                 padding: 24px;
@@ -294,6 +307,10 @@
 
             .catalogue-overview__stats {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .catalogue-overview__desc {
+                font-size: 1.7rem;
             }
         }
 
